@@ -586,7 +586,12 @@ async function vOrganizacion(v) {
 function crearMapa(el, centro) {
   if (!window.L) { el.outerHTML = `<div class="tarjeta">${vacio("mapa", "Mapa no disponible", "Se necesita conexión a internet para cargar los mapas.")}</div>`; return null; }
   mapaActual = L.map(el).setView(centro, 13);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(mapaActual);
+  // Teselas de CARTO (sobre datos de OpenStreetMap). Los servidores de tile.openstreetmap.org bloquean
+  // a aplicaciones que no cumplen su política de uso (por ejemplo, navegadores que no envían Referer).
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+    maxZoom: 19, subdomains: "abcd", referrerPolicy: "strict-origin-when-cross-origin",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  }).addTo(mapaActual);
   return mapaActual;
 }
 const punto = (m, lat, lon, color, html) => L.circleMarker([lat, lon], { radius: 9, color: "#fff", weight: 2, fillColor: color, fillOpacity: 1 }).addTo(m).bindPopup(html);
