@@ -138,7 +138,7 @@ class Command(BaseCommand):
             tablas = [m._meta.db_table for m in (Region, Organizacion, CategoriaAlimento, Donacion,
                                                  Asignacion, Recogida, Certificado, Notificacion)]
             with connection.cursor() as cur:
-                cur.execute(f"DELETE FROM sqlite_sequence WHERE name IN ({','.join('?' * len(tablas))})", tablas)
+                cur.execute(f"DELETE FROM sqlite_sequence WHERE name IN ({','.join(['%s'] * len(tablas))})", tablas)
         self.stdout.write("Datos anteriores borrados.")
 
     # ------------------------------------------------------------------ catálogos
