@@ -37,6 +37,7 @@ En CMD la activación es `.venv\Scripts\activate.bat`.
 
 | URL | Qué muestra |
 |---|---|
+| http://127.0.0.1:8000/ | **La aplicación** (frontend). Toca un usuario de prueba para entrar |
 | http://127.0.0.1:8000/api/salud/ | `{"estado": "ok"}` si el servidor está arriba |
 | http://127.0.0.1:8000/api/docs/ | Documentación interactiva de la API (Swagger) |
 | http://127.0.0.1:8000/admin/ | Panel de administración (usa el superusuario) |
@@ -57,9 +58,29 @@ apps/
   usuarios/        Usuario (correo + rol), PerfilVoluntario, Notificacion
   organizaciones/  Region, Organizacion, CapacidadReceptor, HorarioRecepcion, geo.py (Haversine)
   donaciones/      CategoriaAlimento, Donacion (estados y transiciones), FotoDonacion
-  emparejamiento/  Asignacion                         (algoritmo: pendiente)
-  logistica/       Recogida, Certificado              (servicios: pendiente)
-  impacto/         Indicadores                        (pendiente)
+  emparejamiento/  Asignacion y algoritmo de puntaje (services.py)
+  logistica/       Recogida, Certificado: tomar, recoger, entregar con código
+  impacto/         Indicadores (kg, raciones, receptores, por mes)
+  comun/           Errores con formato común y permisos por rol
+templates/index.html  Página única del frontend
+static/app/           app.js (vistas por rol) y estilos.css (sistema de diseño)
+```
+
+## Simular el flujo completo
+
+1. Entra como **Supermercado El Ahorro** y publica un excedente. El sistema lo sugiere al mejor receptor.
+2. Sal y entra con el receptor sugerido (aparece en el detalle de la donación). En **Por aceptar**, acepta.
+   En el detalle verás el **código de entrega**.
+3. Entra como **Andrés (moto)** o **Laura (carro con cava)**: en **Cerca de mí** toma la recogida,
+   marca "Ya recogí" y escribe el código para confirmar la entrega.
+4. Vuelve al donante: la donación aparece entregada, con certificado y su impacto actualizado.
+
+Con el superusuario verás el panel general, todas las donaciones y el botón "Ver cálculo de candidatos",
+que muestra los cuatro factores del algoritmo para cada receptor.
+
+Pruebas automáticas: `python manage.py test apps`
+
+```
 ```
 
 ## Diferencias con la versión final
