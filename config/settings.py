@@ -116,6 +116,11 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "0.1.0",
 }
 
+# Django manda por defecto "Referrer-Policy: same-origin", que impide que el navegador envíe el Referer
+# a otros sitios. Los servidores de teselas de OpenStreetMap exigen ese Referer, así que lo permitimos
+# solo con el origen (sin rutas ni datos) para peticiones a otros sitios.
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
 # --- Parámetros de la simulación ---

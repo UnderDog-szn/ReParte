@@ -586,11 +586,11 @@ async function vOrganizacion(v) {
 function crearMapa(el, centro) {
   if (!window.L) { el.outerHTML = `<div class="tarjeta">${vacio("mapa", "Mapa no disponible", "Se necesita conexión a internet para cargar los mapas.")}</div>`; return null; }
   mapaActual = L.map(el).setView(centro, 13);
-  // Teselas de CARTO (sobre datos de OpenStreetMap). Los servidores de tile.openstreetmap.org bloquean
-  // a aplicaciones que no cumplen su política de uso (por ejemplo, navegadores que no envían Referer).
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-    maxZoom: 19, subdomains: "abcd", referrerPolicy: "strict-origin-when-cross-origin",
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // Teselas oficiales de OpenStreetMap. Política de uso: https://operations.osmfoundation.org/policies/tiles/
+  // (HTTPS, sin subdominios, el navegador debe enviar Referer y el mapa debe mostrar la atribución).
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19, referrerPolicy: "strict-origin-when-cross-origin",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener">Reportar un error del mapa</a>',
   }).addTo(mapaActual);
   return mapaActual;
 }
