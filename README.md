@@ -19,8 +19,14 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
+python manage.py cargar_semilla
 python manage.py runserver
 ```
+
+`cargar_semilla` crea datos de prueba ficticios de Riohacha y Valledupar: 2 regiones, 5 donantes,
+5 receptores, 6 voluntarios y 14 donaciones en distintos estados. Usuarios: `<usuario>@reparte.test`
+(por ejemplo `elahorro@reparte.test`, `almendros@reparte.test`, `vol.laura@reparte.test`), contraseña
+`ReParte2026!`. Para volver a empezar: `python manage.py cargar_semilla --reiniciar`.
 
 Si PowerShell bloquea la activación del entorno, ejecuta una vez:
 `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
@@ -48,12 +54,12 @@ Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/api/auth/token/ `
 ```
 config/            settings, urls
 apps/
-  usuarios/        Usuario personalizado (inicio de sesión con correo, roles)
-  organizaciones/  Region, Organizacion, CapacidadReceptor        (pendiente)
-  donaciones/      CategoriaAlimento, Donacion                    (pendiente)
-  emparejamiento/  Asignacion y algoritmo de puntaje             (pendiente)
-  logistica/       Recogida, entrega y certificado                (pendiente)
-  impacto/         Indicadores                                    (pendiente)
+  usuarios/        Usuario (correo + rol), PerfilVoluntario, Notificacion
+  organizaciones/  Region, Organizacion, CapacidadReceptor, HorarioRecepcion, geo.py (Haversine)
+  donaciones/      CategoriaAlimento, Donacion (estados y transiciones), FotoDonacion
+  emparejamiento/  Asignacion                         (algoritmo: pendiente)
+  logistica/       Recogida, Certificado              (servicios: pendiente)
+  impacto/         Indicadores                        (pendiente)
 ```
 
 ## Diferencias con la versión final
