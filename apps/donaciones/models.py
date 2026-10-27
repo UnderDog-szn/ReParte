@@ -47,7 +47,7 @@ class Donacion(models.Model):
     TRANSICIONES = {
         Estado.PUBLICADA: {Estado.ASIGNADA, Estado.CANCELADA, Estado.VENCIDA},
         Estado.ASIGNADA: {Estado.EN_RECOGIDA, Estado.PUBLICADA, Estado.CANCELADA},
-        Estado.EN_RECOGIDA: {Estado.EN_TRANSITO, Estado.CANCELADA},
+        Estado.EN_RECOGIDA: {Estado.EN_TRANSITO, Estado.ASIGNADA, Estado.CANCELADA},  # ASIGNADA: el voluntario se retira
         Estado.EN_TRANSITO: {Estado.ENTREGADA},
         Estado.ENTREGADA: set(),
         Estado.CANCELADA: set(),
