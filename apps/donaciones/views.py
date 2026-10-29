@@ -1,4 +1,5 @@
 from django.db.models import Prefetch
+from django.shortcuts import get_object_or_404
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -6,13 +7,14 @@ from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 
 from apps.comun.esquemas import MotivoSerializer
-from apps.comun.permisos import EsDonante
+from apps.comun.permisos import EsDonante, EsReceptor
 from apps.emparejamiento.models import Asignacion
-from apps.emparejamiento.services import procesar_vencimientos
+from apps.emparejamiento.services import donaciones_disponibles, procesar_vencimientos, solicitar_donacion
 from apps.usuarios.models import Usuario
 
 from .models import CategoriaAlimento, Donacion
-from .serializers import CategoriaSerializer, DonacionCrearSerializer, DonacionDetalleSerializer, DonacionListaSerializer
+from .serializers import (CategoriaSerializer, DonacionCrearSerializer, DonacionDetalleSerializer,
+                          DonacionDisponibleSerializer, DonacionListaSerializer)
 from .services import cancelar_donacion, publicar_donacion
 
 ACTIVAS = ["PUBLICADA", "ASIGNADA", "EN_RECOGIDA", "EN_TRANSITO"]
@@ -61,6 +63,8 @@ class DonacionViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
     def get_permissions(self):
         if self.action in ("create", "cancelar"):
             return [EsDonante()]
+        if self.action in ("disponibles", "solicitar"):
+            return [EsReceptor()]
         return super().get_permissions()
 
     def list(self, request, *args, **kwargs):
@@ -82,6 +86,21 @@ class DonacionViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.C
         donacion = self.get_object()
         cancelar_donacion(donacion, request.user, request.data.get("motivo", ""))
         return Response(DonacionDetalleSerializer(self.get_queryset().get(pk=pk), context={"request": request}).data)
+
+    @extend_schema(responses=DonacionDisponibleSerializer(many=True))
+    @action(detail=False)
+    def disponibles(self, request):
+        """Excedentes publicados en la región del receptor para que elija cuál solicitar."""
+        procesar_vencimientos()
+        datos = donaciones_disponibles(request.user.organizacion)
+        return Response(DonacionDisponibleSerializer(datos, many=True, context={"request": request}).data)
+
+    @extend_schema(request=None, responses=DonacionDetalleSerializer)
+    @action(detail=True, methods=["post"])
+    def solicitar(self, request, pk=None):
+        """El receptor elige este excedente: queda asignado a él y se avisa a los voluntarios."""
+        solicitar_donacion(get_object_or_404(Donacion, pk=pk), request.user)
+        return Response(DonacionDetalleSerializer(Donacion.objects.get(pk=pk), context={"request": request}).data)
 
     @action(detail=False)
     def mapa(self, request):

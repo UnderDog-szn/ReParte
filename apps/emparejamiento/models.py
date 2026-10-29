@@ -15,7 +15,12 @@ class Asignacion(models.Model):
         RECHAZADA = "RECHAZADA", "Rechazada"
         EXPIRADA = "EXPIRADA", "Expirada"
 
+    class Origen(models.TextChoices):
+        ALGORITMO = "ALGORITMO", "Sugerida por el algoritmo"
+        SOLICITUD = "SOLICITUD", "Solicitada por el receptor"
+
     donacion = models.ForeignKey("donaciones.Donacion", on_delete=models.CASCADE, related_name="asignaciones")
+    origen = models.CharField(max_length=10, choices=Origen.choices, default=Origen.ALGORITMO)
     receptor = models.ForeignKey(
         "organizaciones.Organizacion", on_delete=models.PROTECT, related_name="asignaciones_recibidas"
     )

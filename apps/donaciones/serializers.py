@@ -51,6 +51,18 @@ class DonacionListaSerializer(serializers.ModelSerializer):
         return recogida.codigo_verificacion if recogida else None
 
 
+class DonacionDisponibleSerializer(DonacionListaSerializer):
+    """Excedente visto por un receptor que está eligiendo qué solicitar."""
+
+    distancia_km = serializers.FloatField(source="distancia_receptor_km", read_only=True)
+    compatible = serializers.BooleanField(read_only=True)
+    motivo_no_compatible = serializers.CharField(read_only=True)
+    sugerida_a_mi = serializers.BooleanField(read_only=True)
+
+    class Meta(DonacionListaSerializer.Meta):
+        fields = DonacionListaSerializer.Meta.fields + ["distancia_km", "compatible", "motivo_no_compatible", "sugerida_a_mi"]
+
+
 class DonacionDetalleSerializer(DonacionListaSerializer):
     asignaciones = serializers.SerializerMethodField()
     recogida = serializers.SerializerMethodField()
@@ -62,7 +74,7 @@ class DonacionDetalleSerializer(DonacionListaSerializer):
             "motivo_cancelacion", "asignaciones", "recogida", "certificado", "linea_tiempo"]
 
     def get_asignaciones(self, d):
-        return [{"intento": a.intento, "receptor": a.receptor.razon_social, "puntaje": a.puntaje,
+        return [{"intento": a.intento, "receptor": a.receptor.razon_social, "puntaje": a.puntaje, "origen": a.origen,
                  "distancia_km": a.distancia_km, "estado": a.estado, "estado_display": a.get_estado_display(),
                  "motivo_rechazo": a.motivo_rechazo} for a in d.asignaciones.all()]
 
@@ -83,6 +95,10 @@ class DonacionDetalleSerializer(DonacionListaSerializer):
     def get_linea_tiempo(self, d):
         ev = [{"fecha": d.creado_en, "titulo": "Publicada", "detalle": f"por {d.donante.razon_social}"}]
         for a in d.asignaciones.all():
+            if a.origen == "SOLICITUD":
+                ev.append({"fecha": a.respondida_en, "titulo": f"Solicitada por {a.receptor.razon_social}",
+                           "detalle": f"elegida directamente · {a.distancia_km} km"})
+                continue
             ev.append({"fecha": a.creado_en, "titulo": f"Sugerida a {a.receptor.razon_social}",
                        "detalle": f"puntaje {a.puntaje} · {a.distancia_km} km"})
             if a.estado == "ACEPTADA":

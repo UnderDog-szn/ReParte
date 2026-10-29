@@ -55,6 +55,8 @@ const ICONOS = {
   copo: '<path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/>',
   pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
   alerta: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+  cesta: '<path d="M4 10h16l-1.6 9.2a2 2 0 0 1-2 1.8H7.6a2 2 0 0 1-2-1.8z"/><path d="m9 10 3-6 3 6"/>',
+  ruta: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h8.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H16"/>',
   candado: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
 };
 const icono = (n, cls = "") => `<svg class="icono ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n] || ""}</svg>`;
@@ -191,7 +193,7 @@ function tarjetaDonacion(d) {
 const MENUS = {
   // [ruta, texto del menú lateral, ícono, texto corto para la barra inferior del celular]
   DONANTE: [["inicio", "Inicio", "inicio", "Inicio"], ["publicar", "Publicar", "mas", "Publicar"], ["donaciones", "Donaciones", "lista", "Donaciones"], ["impacto", "Impacto", "grafico", "Impacto"], ["certificados", "Certificados", "medalla", "Certificados"]],
-  RECEPTOR: [["pendientes", "Por aceptar", "reloj", "Aceptar"], ["recibidas", "Recibidas", "caja", "Recibidas"], ["mapa", "Mapa", "mapa", "Mapa"], ["organizacion", "Mi organización", "edificio", "Perfil"], ["impacto", "Impacto", "grafico", "Impacto"]],
+  RECEPTOR: [["pendientes", "Por aceptar", "reloj", "Aceptar"], ["disponibles", "Elegir excedentes", "cesta", "Elegir"], ["recibidas", "Recibidas", "caja", "Recibidas"], ["organizacion", "Mi organización", "edificio", "Perfil"], ["impacto", "Impacto", "grafico", "Impacto"]],
   VOLUNTARIO: [["cerca", "Cerca de mí", "pin", "Cerca"], ["activa", "Mi recogida", "camion", "Recogida"], ["historial", "Historial", "lista", "Historial"], ["impacto", "Impacto", "grafico", "Impacto"]],
   ADMIN: [["panel", "Panel", "grafico", "Panel"], ["todas", "Donaciones", "lista", "Donaciones"], ["mapa", "Mapa", "mapa", "Mapa"]],
 };
@@ -554,6 +556,63 @@ async function vPendientes(v) {
   temporizadores.push(setInterval(() => { if (!document.querySelector(".modal-fondo")) pinta().catch(() => {}); }, 20000));
 }
 
+async function vDisponibles(v) {
+  titulo("Elegir excedentes");
+  const lista = await api("/donaciones/disponibles/");
+  let filtro = "PARA_MI";
+  const org = YO.organizacion;
+  v.innerHTML = `<p class="ayuda" style="margin-bottom:12px">Excedentes publicados en ${esc(YO.region?.nombre || "tu región")}.
+      Elige lo que tu organización necesita: queda asignado a ustedes al instante y se avisa a los voluntarios.</p>
+    ${lista.length ? `<div id="mapa" class="mapa" style="height:280px;margin-bottom:12px"></div>
+      <div class="leyenda" style="margin:0 0 16px"><span><i style="background:#1F7A4D"></i>Puedes solicitarlo</span><span><i style="background:#9AA59F"></i>No compatible</span><span><i style="background:#E8833A"></i>Tu organización</span></div>
+      <div class="pestanas" id="filtros"></div><div class="lista" id="lista"></div>`
+      : vacio("cesta", "No hay excedentes publicados ahora", "Cuando un donante publique algo en tu región aparecerá aquí.")}`;
+  if (!lista.length) return;
+
+  const pinta = () => {
+    const visibles = filtro === "PARA_MI" ? lista.filter((d) => d.compatible) : lista;
+    $("#filtros").innerHTML = [["PARA_MI", `Para mí (${lista.filter((d) => d.compatible).length})`], ["TODOS", `Todos (${lista.length})`]]
+      .map(([k, t]) => `<button class="pestana ${k === filtro ? "sel" : ""}" data-f="${k}">${t}</button>`).join("");
+    $$("[data-f]").forEach((b) => b.addEventListener("click", () => { filtro = b.dataset.f; pinta(); }));
+    $("#lista").innerHTML = visibles.length ? visibles.map((d) => {
+      const frio = d.condicion !== "AMBIENTE";
+      return `<article class="tarjeta tarjeta-donacion ${d.compatible ? "" : "no-compatible"}">
+        <div class="miniatura ${frio ? "frio" : ""}">${icono(frio ? "copo" : "caja")}</div>
+        <div class="td-cuerpo"><strong>${esc(d.descripcion)}</strong>
+          <div class="td-meta">${fmt.kg(d.peso_estimado_kg)} · ${esc(d.categoria)} · ${esc(d.condicion_display)}</div>
+          <div class="td-meta">${esc(d.donante.razon_social)} · a ${d.distancia_km.toLocaleString("es-CO")} km de ustedes</div>
+          <div class="td-meta">Apto hasta ${fmt.fecha(d.fecha_limite_consumo)} · recoger antes de ${fmt.fecha(d.recogida_hasta)}</div>
+          ${d.sugerida_a_mi ? `<div><span class="chip chip-acento">El sistema ya te la sugirió</span></div>` : ""}
+          ${d.compatible ? `<button class="btn btn-primario" data-solicitar="${d.id}" type="button" style="align-self:flex-start;margin-top:6px">${icono("cesta")} Solicitar</button>`
+            : `<p class="aviso-no">${icono("candado")} ${esc(d.motivo_no_compatible)}</p>`}
+        </div></article>`;
+    }).join("") : vacio("cesta", "Nada compatible por ahora", "Revisa la pestaña Todos para ver por qué no puedes recibir los demás.");
+    $$("[data-solicitar]").forEach((b) => b.addEventListener("click", async () => {
+      const d = lista.find((x) => String(x.id) === b.dataset.solicitar);
+      const ok = await modal({ titulo: "¿Solicitar este excedente?", confirmar: "Sí, lo necesitamos",
+        cuerpo: `<p><b>${esc(d.descripcion)}</b> · ${fmt.kg(d.peso_estimado_kg)}<br><span class="ayuda">De ${esc(d.donante.razon_social)}, a ${d.distancia_km} km.
+          Un voluntario lo recogerá y te lo llevará; tendrás un código para confirmar la entrega.</span></p>` });
+      if (!ok) return;
+      try {
+        await api(`/donaciones/${d.id}/solicitar/`, { metodo: "POST" });
+        aviso("¡Listo! Es para ustedes. Ya avisamos a los voluntarios.");
+        location.hash = `#/donacion/${d.id}`;
+      } catch (e) { aviso(e.message, "error"); navegar(); }
+    }));
+  };
+  pinta();
+
+  const m = crearMapa($("#mapa"), [Number(org.latitud), Number(org.longitud)]);
+  if (!m) return;
+  L.circleMarker([org.latitud, org.longitud], { radius: 11, color: "#fff", weight: 3, fillColor: "#E8833A", fillOpacity: 1 })
+    .addTo(m).bindTooltip("Tu organización", { direction: "top" });
+  lista.forEach((d) => {
+    L.circleMarker([d.latitud, d.longitud], { radius: 9, color: "#fff", weight: 2, fillColor: d.compatible ? "#1F7A4D" : "#9AA59F", fillOpacity: 1 })
+      .addTo(m).bindPopup(`<b>${esc(d.descripcion)}</b><br>${fmt.kg(d.peso_estimado_kg)} · ${esc(d.donante.razon_social)}<br>${d.compatible ? "Puedes solicitarlo" : esc(d.motivo_no_compatible)}`);
+  });
+  m.fitBounds([[org.latitud, org.longitud], ...lista.map((d) => [d.latitud, d.longitud])].map((p) => p.map(Number)), { padding: [30, 30], maxZoom: 15 });
+}
+
 const vRecibidas = (v) => listaDonaciones(v, { tituloVista: "Recibidas",
   pestanas: [["ACTIVAS", "En camino"], ["ENTREGADA", "Entregadas"], ["", "Todas"]],
   vacioTxt: "Aquí verás las donaciones que aceptes." });
@@ -596,6 +655,66 @@ function crearMapa(el, centro) {
 }
 const punto = (m, lat, lon, color, html) => L.circleMarker([lat, lon], { radius: 9, color: "#fff", weight: 2, fillColor: color, fillOpacity: 1 }).addTo(m).bindPopup(html);
 
+function miUbicacion() {
+  return new Promise((res) => {
+    if (!navigator.geolocation) { res(null); return; }
+    navigator.geolocation.getCurrentPosition((p) => res({ lat: p.coords.latitude, lon: p.coords.longitude }),
+      () => res(null), { enableHighAccuracy: true, timeout: 7000, maximumAge: 60000 });
+  });
+}
+function distanciaKm(a, b) {
+  const rad = (x) => (Number(x) * Math.PI) / 180;
+  const dlat = rad(b.lat - a.lat), dlon = rad(b.lon - a.lon);
+  const h = Math.sin(dlat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dlon / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+const COLOR_PUNTO = { voluntario: "#2563EB", recoger: "#1F7A4D", entregar: "#E8833A" };
+const ETIQUETA_PUNTO = { voluntario: "Tú", recoger: "Recoger", entregar: "Entregar" };
+
+/** Pide la ruta al backend (OSRM) y la dibuja. Devuelve los datos de la ruta. */
+async function dibujarRuta(m, recogidaId, ubic, capaAnterior) {
+  const q = ubic ? `?lat=${ubic.lat}&lon=${ubic.lon}` : "";
+  const r = await api(`/recogidas/${recogidaId}/ruta/${q}`);
+  if (capaAnterior) capaAnterior.remove();
+  const capa = L.layerGroup().addTo(m);
+  L.polyline(r.geometria, { color: "#13261C", weight: 8, opacity: 0.25 }).addTo(capa);
+  L.polyline(r.geometria, { color: "#1F7A4D", weight: 5, opacity: 0.95, dashArray: r.fuente === "osrm" ? null : "10 8" }).addTo(capa);
+  r.puntos.forEach((p) => {
+    L.circleMarker([p.lat, p.lon], { radius: 11, color: "#fff", weight: 3, fillColor: COLOR_PUNTO[p.tipo], fillOpacity: 1 })
+      .addTo(capa).bindTooltip(`${ETIQUETA_PUNTO[p.tipo]}: ${esc(p.nombre)}`, { permanent: p.tipo !== "voluntario", direction: "top", offset: [0, -10] });
+  });
+  m.fitBounds(r.geometria, { padding: [50, 50], maxZoom: 16 });
+  r.capa = capa;
+  return r;
+}
+function resumenRuta(r) {
+  const fuente = r.fuente === "osrm" ? "por calles (OSRM)" : "en línea recta, aproximado (sin conexión al servicio de rutas)";
+  return `<div class="resumen-ruta"><div class="td-fila"><strong style="font-size:20px">${r.distancia_km.toLocaleString("es-CO")} km</strong>
+    <span class="td-meta">≈ ${r.duracion_min} min ${fuente}</span></div>
+    <ol class="tramos">${r.tramos.map((t) => `<li>Hasta <b>${esc(t.hasta)}</b>: ${t.distancia_km.toLocaleString("es-CO")} km · ${t.duracion_min} min</li>`).join("")}</ol></div>`;
+}
+function enlacesNavegacion(r) {
+  const ll = (p) => `${p.lat},${p.lon}`;
+  const pts = r.puntos;
+  const inicio = pts[0].tipo === "voluntario" ? pts[0] : null;
+  const resto = inicio ? pts.slice(1) : pts;
+  const destino = resto[resto.length - 1];
+  const paradas = resto.slice(0, -1);
+  const g = new URLSearchParams({ api: "1", destination: ll(destino), travelmode: "driving" });
+  if (inicio) g.set("origin", ll(inicio));
+  if (paradas.length) g.set("waypoints", paradas.map(ll).join("|"));
+  const osm = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${pts.map(ll).join("%3B")}`;
+  return `<div class="td-fila" style="gap:8px"><a class="btn btn-primario" style="flex:1" href="https://www.google.com/maps/dir/?${g}" target="_blank" rel="noopener">${icono("ruta")} Navegar con Google Maps</a>
+    <a class="btn btn-secundario" style="flex:1" href="${osm}" target="_blank" rel="noopener">${icono("mapa")} OpenStreetMap</a></div>`;
+}
+/** Usa la ubicación del navegador solo si está cerca de la zona de la recogida (en la simulación los datos son de Riohacha/Valledupar). */
+async function ubicacionUtil(referencia) {
+  const u = await miUbicacion();
+  if (!u) return { ubic: null, nota: "No compartiste tu ubicación: la ruta empieza en el donante." };
+  if (distanciaKm(u, referencia) > 40) return { ubic: null, nota: "Estás lejos de la zona de esta recogida (datos de simulación): la ruta empieza en el donante." };
+  return { ubic: u, nota: "" };
+}
+
 async function vMapa(v) {
   titulo("Mapa");
   const [dons, recs] = await Promise.all([api("/donaciones/mapa/"), api(`/organizaciones/receptores/${YO.region ? `?region=${YO.region.id}` : ""}`)]);
@@ -623,7 +742,8 @@ function tarjetaRecogida(r, conBoton = true) {
       <span class="punto destino"></span><span><b>Entregar:</b> ${esc(r.destino.razon_social)}</span></div>
     ${r.estado === "ENTREGADA" ? `<span class="td-meta">Entregada ${fmt.fecha(r.entregada_en)}</span>`
       : `<span class="td-meta">Recoger antes de ${fmt.fecha(r.recogida_hasta)}</span>`}
-    ${conBoton ? `<button class="btn btn-primario" data-tomar="${r.id}" type="button">Tomar recogida</button>` : ""}
+    ${conBoton ? `<div class="td-fila" style="gap:8px"><button class="btn btn-secundario" data-ver-ruta="${r.id}" type="button" style="flex:1">${icono("ruta")} Ver ruta</button>
+      <button class="btn btn-primario" data-tomar="${r.id}" type="button" style="flex:1">Tomar recogida</button></div>` : ""}
   </article>`;
 }
 
@@ -633,7 +753,7 @@ async function vCerca(v) {
   const p = YO.perfil_voluntario;
   v.innerHTML = `${activa ? `<div class="aviso-activa"><span>Tienes una recogida en curso</span><a class="btn btn-primario" href="#/activa">Continuar</a></div>` : ""}
     <p class="ayuda" style="margin-bottom:12px">${esc(p.tipo_vehiculo_display)} · hasta ${fmt.kg(p.capacidad_kg)}${p.tiene_cava_frio ? " · con cava de frío" : ""} · ${esc(p.region)}</p>
-    ${disp.length ? `<div id="mapa" class="mapa" style="height:260px;margin-bottom:16px"></div><div class="lista">${disp.map((r) => tarjetaRecogida(r, !activa)).join("")}</div>`
+    ${disp.length ? `<div id="mapa" class="mapa" style="height:300px;margin-bottom:8px"></div><div id="info-ruta" class="ayuda" style="margin-bottom:16px">Toca “Ver ruta” en una recogida para ver el recorrido.</div><div class="lista">${disp.map((r) => tarjetaRecogida(r, !activa)).join("")}</div>`
       : vacio("camion", "No hay recogidas disponibles", "Cuando un receptor acepte una donación compatible con tu vehículo, aparecerá aquí.")}`;
   $$("[data-tomar]", v).forEach((b) => b.addEventListener("click", () => conCarga(b, async () => {
     try { await api(`/recogidas/${b.dataset.tomar}/tomar/`, { metodo: "POST" }); aviso("¡Recogida tomada! Ve por la donación."); location.hash = "#/activa"; }
@@ -646,8 +766,21 @@ async function vCerca(v) {
         punto(m, r.origen.latitud, r.origen.longitud, "#1F7A4D", `<b>Recoger:</b> ${esc(r.origen.razon_social)}<br>${fmt.kg(r.peso_kg)}`);
         punto(m, r.destino.latitud, r.destino.longitud, "#E8833A", `<b>Entregar:</b> ${esc(r.destino.razon_social)}`);
       });
+      disp.forEach((r) => L.polyline([[r.origen.latitud, r.origen.longitud], [r.destino.latitud, r.destino.longitud]].map((p) => p.map(Number)),
+        { color: "#5B6660", weight: 2, dashArray: "4 6" }).addTo(m));
       const pts = disp.flatMap((r) => [[Number(r.origen.latitud), Number(r.origen.longitud)], [Number(r.destino.latitud), Number(r.destino.longitud)]]);
       m.fitBounds(pts, { padding: [30, 30], maxZoom: 15 });
+      let capa = null, ubicacion;
+      $$("[data-ver-ruta]", v).forEach((b) => b.addEventListener("click", () => conCarga(b, async () => {
+        const rec = disp.find((x) => String(x.id) === b.dataset.verRuta);
+        if (ubicacion === undefined) ubicacion = await ubicacionUtil({ lat: rec.origen.latitud, lon: rec.origen.longitud });
+        try {
+          const ruta = await dibujarRuta(m, rec.id, ubicacion.ubic, capa);
+          capa = ruta.capa;
+          $("#info-ruta").innerHTML = `${resumenRuta(ruta)}${ubicacion.nota ? `<p class="nota">${esc(ubicacion.nota)}</p>` : ""}`;
+          $("#mapa").scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (e) { aviso(e.message, "error"); }
+      })));
     }
   }
 }
@@ -670,6 +803,12 @@ async function vActiva(v, _p, entregada = null) {
     <section class="tarjeta" style="margin-bottom:16px"><div class="td-fila" style="justify-content:space-between;margin-bottom:12px"><h2>${esc(r.codigo_donacion)}</h2>${chip(r.estado)}</div>
       <ol class="pasos-recogida">${pasos.map(([t, hecho], i) => `<li class="${hecho ? "hecho" : i === actual ? "actual" : ""}"><span class="marca-paso">${hecho ? icono("check") : i + 1}</span>${t}</li>`).join("")}</ol>
       <p class="td-meta">${esc(r.descripcion)} · ${fmt.kg(r.peso_kg)}${r.requiere_frio ? " · requiere frío" : ""}</p></section>
+    <section class="tarjeta" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+      <h3>${icono("ruta")} Tu ruta</h3>
+      <div id="mapa" class="mapa" style="height:320px"></div>
+      <div id="info-ruta" class="ayuda">Calculando la ruta…</div>
+      <div id="navegar"></div>
+    </section>
     <section class="tarjeta" style="display:flex;flex-direction:column;gap:10px">
       <span class="td-meta">${recogido ? "Entregar en" : "Recoger en"}</span><h3 style="font-size:20px">${esc(lugar.razon_social)}</h3>
       <p class="td-meta">${esc(lugar.direccion)}</p>
@@ -683,6 +822,18 @@ async function vActiva(v, _p, entregada = null) {
       ${!recogido ? `<button class="btn-fantasma" id="liberar" type="button">No puedo hacerla, liberar recogida</button>` : ""}
     </section></div>`;
   $("#c-codigo")?.classList.add("entrada-codigo");
+  const m = crearMapa($("#mapa"), [Number(lugar.latitud), Number(lugar.longitud)]);
+  if (m) {
+    (async () => {
+      const { ubic, nota } = await ubicacionUtil({ lat: r.origen.latitud, lon: r.origen.longitud });
+      try {
+        const ruta = await dibujarRuta(m, r.id, ubic);
+        if (!$("#info-ruta")) return;
+        $("#info-ruta").innerHTML = `${resumenRuta(ruta)}${nota ? `<p class="nota">${esc(nota)}</p>` : ""}`;
+        $("#navegar").innerHTML = enlacesNavegacion(ruta);
+      } catch (e) { if ($("#info-ruta")) $("#info-ruta").textContent = e.message; }
+    })();
+  } else { $("#info-ruta").textContent = ""; }
   $("#f").addEventListener("submit", async (e) => {
     e.preventDefault();
     const temperatura = e.target.temperatura?.value || null;
@@ -757,7 +908,7 @@ async function vNotificaciones(v) {
 /* ================= arranque ================= */
 const RUTAS = {
   inicio: vInicioDonante, publicar: vPublicar, donaciones: vDonaciones, donacion: vDonacion, impacto: vImpacto,
-  certificados: vCertificados, pendientes: vPendientes, recibidas: vRecibidas, organizacion: vOrganizacion, mapa: vMapa,
+  certificados: vCertificados, pendientes: vPendientes, disponibles: vDisponibles, recibidas: vRecibidas, organizacion: vOrganizacion, mapa: vMapa,
   cerca: vCerca, activa: vActiva, historial: vHistorial, panel: vPanel, todas: vTodas, notificaciones: vNotificaciones,
 };
 

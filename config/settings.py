@@ -131,4 +131,7 @@ REPARTE = {
     "FILTRAR_POR_HORARIO": False,
     # Supuesto para el indicador de raciones: 1 ración ~ 0,4 kg de alimento.
     "KG_POR_RACION": "0.4",
+    # Rutas del voluntario. Servidor de demostración de OSRM: sirve para pruebas, no para producción.
+    "OSRM_URL": os.environ.get("REPARTE_OSRM_URL", "https://router.project-osrm.org"),
+    "OSRM_TIMEOUT": 6,
 }

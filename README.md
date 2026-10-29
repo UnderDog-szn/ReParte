@@ -75,6 +75,12 @@ static/app/           app.js (vistas por rol) y estilos.css (sistema de diseño)
    marca "Ya recogí" y escribe el código para confirmar la entrega.
 4. Vuelve al donante: la donación aparece entregada, con certificado y su impacto actualizado.
 
+**Variante: el receptor elige.** Entra como receptor y abre **Elegir excedentes**: verás en mapa y lista lo
+publicado en tu región, con lo que puedes recibir (frío, capacidad, radio). Toca **Solicitar** y queda asignado al
+instante. El voluntario lo encuentra en **Cerca de mí**, toca **Ver ruta** y, al tomarlo, ve el recorrido
+(su ubicación → donante → receptor) con distancia, tiempo y botones para navegar con Google Maps u OpenStreetMap.
+Las rutas se calculan con OSRM (servidor de demostración); si no responde, se muestra una ruta aproximada en línea recta.
+
 Con el superusuario verás el panel general, todas las donaciones y el botón "Ver cálculo de candidatos",
 que muestra los cuatro factores del algoritmo para cada receptor.
 

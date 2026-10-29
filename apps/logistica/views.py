@@ -3,7 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
+
+from apps.comun.excepciones import ErrorNegocio
 
 from apps.comun.esquemas import CodigoSerializer, MotivoSerializer, TemperaturaSerializer, sin_cuerpo
 from apps.comun.permisos import EsDonante, EsVoluntario
@@ -11,6 +14,7 @@ from apps.emparejamiento.services import procesar_vencimientos
 
 from . import services
 from .models import Certificado, Recogida
+from .rutas import ruta_de_recogida
 from .serializers import CertificadoSerializer, RecogidaSerializer
 
 RELACIONES = ("donacion__donante", "donacion__categoria", "asignacion__receptor", "voluntario__usuario")
@@ -43,6 +47,22 @@ class RecogidaViewSet(viewsets.GenericViewSet):
     def activa(self, request):
         r = services.recogida_activa(self._perfil())
         return Response(self.get_serializer(r).data if r else None)
+
+    @extend_schema(parameters=[OpenApiParameter("lat", float, required=False), OpenApiParameter("lon", float, required=False)],
+                   responses=OpenApiTypes.OBJECT)
+    @action(detail=True)
+    def ruta(self, request, pk=None):
+        """Ruta para el voluntario: su ubicación (opcional) → donante → receptor, calculada con OSRM."""
+        r = self.get_object()
+        perfil = self._perfil()
+        if not (r.voluntario_id == perfil.pk or (r.estado == "DISPONIBLE" and r.donacion.donante.region_id == perfil.region_id)):
+            raise ErrorNegocio("No puedes ver la ruta de esta recogida.")
+        lat, lon = request.query_params.get("lat"), request.query_params.get("lon")
+        try:
+            lat, lon = (float(lat), float(lon)) if lat and lon else (None, None)
+        except ValueError:
+            lat = lon = None
+        return Response(ruta_de_recogida(r, lat, lon))
 
     @action(detail=False)
     def historial(self, request):

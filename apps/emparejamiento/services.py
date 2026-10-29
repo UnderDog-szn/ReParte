@@ -58,14 +58,40 @@ def _horario_compatible(receptor, donacion):
     )
 
 
+def compatibilidad(donacion, receptor):
+    """
+    Restricciones duras entre una donación y un receptor.
+    Devuelve (es_compatible, motivo_si_no, distancia_km).
+    """
+    region = donacion.donante.region
+    cap = getattr(receptor, "capacidad", None)
+    km = distancia_km(donacion.latitud, donacion.longitud, receptor.latitud, receptor.longitud)
+    if receptor.region_id != region.pk:
+        return False, "Está en otra región.", km
+    if cap is None:
+        return False, "Tu organización no tiene capacidad registrada.", km
+    if donacion.condicion != Donacion.Condicion.AMBIENTE and not (cap.tiene_refrigeracion or cap.tiene_congelacion):
+        return False, "Requiere refrigeración y no tienes.", km
+    if donacion.condicion == Donacion.Condicion.CONGELADO and not cap.tiene_congelacion:
+        return False, "Requiere congelador y no tienes.", km
+    if donacion.categoria.es_perecedero and not cap.acepta_perecederos:
+        return False, "Es perecedero y no recibes perecederos.", km
+    if donacion.peso_estimado_kg > cap.capacidad_kg_dia:
+        return False, f"Supera tu capacidad diaria ({cap.capacidad_kg_dia} kg).", km
+    if km > float(min(region.radio_busqueda_km, cap.radio_max_km)):
+        return False, "Está fuera de tu radio de recepción.", km
+    if settings.REPARTE.get("FILTRAR_POR_HORARIO", False) and not _horario_compatible(receptor, donacion):
+        return False, "La ventana de recogida no coincide con tu horario.", km
+    return True, "", km
+
+
 def candidatos(donacion):
     """Receptores que cumplen las restricciones duras, con su distancia."""
-    region = donacion.donante.region
     intentados = donacion.asignaciones.values_list("receptor_id", flat=True)
     receptores = (
         Organizacion.objects.filter(
             tipo=Organizacion.Tipo.RECEPTOR, estado_verificacion=Organizacion.Estado.VERIFICADA,
-            region=region, capacidad__isnull=False,
+            region=donacion.donante.region, capacidad__isnull=False,
         )
         .exclude(pk__in=list(intentados))
         .select_related("capacidad")
@@ -76,26 +102,11 @@ def candidatos(donacion):
         Asignacion.objects.filter(estado=Asignacion.Estado.ACEPTADA, respondida_en__gte=hace_7_dias)
         .values_list("receptor").annotate(n=Count("id"))
     )
-    requiere_frio = donacion.condicion != Donacion.Condicion.AMBIENTE
-    filtrar_horario = settings.REPARTE.get("FILTRAR_POR_HORARIO", False)
-
     lista = []
     for r in receptores:
-        cap = r.capacidad
-        if requiere_frio and not (cap.tiene_refrigeracion or cap.tiene_congelacion):
-            continue
-        if donacion.condicion == Donacion.Condicion.CONGELADO and not cap.tiene_congelacion:
-            continue
-        if donacion.categoria.es_perecedero and not cap.acepta_perecederos:
-            continue
-        if donacion.peso_estimado_kg > cap.capacidad_kg_dia:
-            continue
-        km = distancia_km(donacion.latitud, donacion.longitud, r.latitud, r.longitud)
-        if km > float(min(region.radio_busqueda_km, cap.radio_max_km)):
-            continue
-        if filtrar_horario and not _horario_compatible(r, donacion):
-            continue
-        lista.append(Candidato(receptor=r, distancia_km=km, recibidas_7d=recibidas.get(r.pk, 0)))
+        ok, _motivo, km = compatibilidad(donacion, r)
+        if ok:
+            lista.append(Candidato(receptor=r, distancia_km=km, recibidas_7d=recibidas.get(r.pk, 0)))
     return lista
 
 
@@ -188,6 +199,78 @@ def rechazar_asignacion(asignacion, usuario, motivo=""):
     a.save(update_fields=["estado", "respondida_en", "respondida_por", "motivo_rechazo"])
     siguiente = asignar_siguiente(a.donacion)
     return a, siguiente
+
+
+def donaciones_disponibles(receptor):
+    """Excedentes publicados en la región del receptor, con su compatibilidad, del más cercano al más lejano."""
+    qs = (
+        Donacion.objects.filter(
+            estado=Donacion.Estado.PUBLICADA, donante__region=receptor.region,
+            fecha_limite_consumo__gt=timezone.now(),
+        )
+        .select_related("donante__region", "categoria")
+        .prefetch_related("asignaciones")
+    )
+    resultado = []
+    for d in qs:
+        ok, motivo, km = compatibilidad(d, receptor)
+        sugerida = next((a for a in d.asignaciones.all() if a.estado == Asignacion.Estado.SUGERIDA), None)
+        d.distancia_receptor_km = round(km, 2)
+        d.compatible = ok
+        d.motivo_no_compatible = motivo
+        d.sugerida_a_mi = bool(sugerida and sugerida.receptor_id == receptor.pk)
+        resultado.append(d)
+    return sorted(resultado, key=lambda d: (not d.compatible, d.distancia_receptor_km))
+
+
+@transaction.atomic
+def solicitar_donacion(donacion, usuario):
+    """
+    El receptor elige directamente un excedente publicado (sin esperar al algoritmo).
+    Queda aceptado de inmediato, se crea la recogida y se avisa a los voluntarios.
+    Si la donación estaba sugerida a otro receptor, esa sugerencia se cierra.
+    """
+    from apps.logistica.services import avisar_voluntarios, crear_recogida
+
+    receptor = usuario.organizacion
+    if not receptor or receptor.tipo != Organizacion.Tipo.RECEPTOR or not receptor.verificada:
+        raise ErrorNegocio("Solo una organización receptora verificada puede solicitar excedentes.")
+    d = Donacion.objects.select_for_update().select_related("donante__region", "categoria").get(pk=donacion.pk)
+    if d.estado != Donacion.Estado.PUBLICADA:
+        raise ErrorNegocio("Este excedente ya no está disponible.")
+    if d.fecha_limite_consumo <= timezone.now():
+        raise ErrorNegocio("Este excedente ya venció.")
+    ok, motivo, km = compatibilidad(d, receptor)
+    if not ok:
+        raise ErrorNegocio(f"No puedes recibir este excedente: {motivo}")
+
+    ahora = timezone.now()
+    for otra in d.asignaciones.filter(estado=Asignacion.Estado.SUGERIDA).exclude(receptor=receptor).select_related("receptor"):
+        otra.estado = Asignacion.Estado.EXPIRADA
+        otra.motivo_rechazo = "Otro receptor la solicitó primero."
+        otra.save(update_fields=["estado", "motivo_rechazo"])
+        notificar(otra.receptor.miembros.all(), "SUGERENCIA_RETIRADA", "Sugerencia retirada",
+                  f"{d.codigo} fue solicitada por otra organización.", d)
+
+    a = d.asignaciones.filter(receptor=receptor).first()  # puede existir un intento anterior
+    if a is None:
+        a = Asignacion(donacion=d, receptor=receptor, intento=d.asignaciones.count() + 1)
+    a.origen = Asignacion.Origen.SOLICITUD
+    a.puntaje = Decimal("0")
+    a.distancia_km = Decimal(str(round(km, 2)))
+    a.estado = Asignacion.Estado.ACEPTADA
+    a.expira_en = ahora
+    a.respondida_en = ahora
+    a.respondida_por = usuario
+    a.motivo_rechazo = ""
+    a.save()
+
+    cambiar_estado(d, Donacion.Estado.ASIGNADA)
+    recogida = crear_recogida(a)
+    notificar(d.donante.miembros.all(), "DONACION_SOLICITADA", "Tu excedente fue solicitado",
+              f"{receptor.razon_social} solicitó {d.codigo}. Buscando voluntario.", d)
+    avisar_voluntarios(recogida)
+    return a
 
 
 def expirar_asignaciones():
