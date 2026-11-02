@@ -55,6 +55,22 @@ const ICONOS = {
   copo: '<path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/>',
   pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
   alerta: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+  manzana: '<path d="M12 7.5c-1.6-1.4-5-1.6-6.4.6-1.3 2-.9 6.6 1.4 10 1.4 2 3 2.4 5 1.4 2 1 3.6.6 5-1.4 2.3-3.4 2.7-8 1.4-10-1.4-2.2-4.8-2-6.4-.6z"/><path d="M12 7.5c0-2 1-3.6 3-4.5"/>',
+  pan: '<path d="M4.5 12.5A4 4 0 0 1 7 5.5h10a4 4 0 0 1 2.5 7V18a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2z"/><path d="M9.5 10v6M14.5 10v6"/>',
+  botella: '<path d="M9.5 2h5v3l2 3v12a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V8l2-3z"/><path d="M7.5 12h9"/>',
+  carne: '<path d="M14.5 3.5a5.5 5.5 0 0 1 2 9.2l-3.8 3.8-5.2-5.2 3.8-3.8a5.5 5.5 0 0 1 3.2-4z"/><path d="m7.5 11.3-2.3 2.3M10 16.5l-2.3 2.3M4 17l3 3"/>',
+  trigo: '<path d="M12 22V9"/><path d="M12 9c-2.2-.8-3.4-2.8-3.4-5 2.2 0 3.4 1.8 3.4 3.4 0-1.6 1.2-3.4 3.4-3.4 0 2.2-1.2 4.2-3.4 5zM12 14.5c-2.2-.8-3.4-2.6-3.4-4.6M12 14.5c2.2-.8 3.4-2.6 3.4-4.6M12 19.5c-2.2-.8-3.4-2.6-3.4-4.6M12 19.5c2.2-.8 3.4-2.6 3.4-4.6"/>',
+  lata: '<ellipse cx="12" cy="5" rx="6" ry="2"/><path d="M6 5v14c0 1.1 2.7 2 6 2s6-.9 6-2V5M6 10h12M6 15h12"/>',
+  olla: '<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0z"/><path d="M8 7.5c0-1 1-1.5 1-2.5M12 7.5c0-1 1-1.5 1-2.5M16 7.5c0-1 1-1.5 1-2.5"/>',
+  vaso: '<path d="M6.5 4h11l-1.2 15.2a2 2 0 0 1-2 1.8H9.7a2 2 0 0 1-2-1.8z"/><path d="M7.2 9h9.6"/>',
+  tienda: '<path d="M3 9.5 4.5 4h15L21 9.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 12v8h14v-8M10 20v-5h4v5"/>',
+  bici: '<circle cx="6" cy="17" r="3.5"/><circle cx="18" cy="17" r="3.5"/><path d="M6 17l4-8h5l3 8M9 6h3M14.5 9 12 17"/>',
+  estrella: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  descargar: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+  repetir: '<path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/>',
+  camara: '<path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/>',
+  documento: '<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M8.5 13h7M8.5 17h5"/>',
+  lapiz: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
   cesta: '<path d="M4 10h16l-1.6 9.2a2 2 0 0 1-2 1.8H7.6a2 2 0 0 1-2-1.8z"/><path d="m9 10 3-6 3 6"/>',
   ruta: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h8.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H16"/>',
   candado: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
@@ -63,14 +79,14 @@ const icono = (n, cls = "") => `<svg class="icono ${cls}" viewBox="0 0 24 24" fi
 const logo = (t = 32) => `<svg width="${t}" height="${t}" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#2E8B57"/><path d="M8.5 21c0-7 5-11.5 14-12-1 9.5-5.5 14-11.5 14" fill="#FFF8EF" stroke="#FFF8EF" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 23c3-4.5 6-7 9.5-9" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="23" r="4" fill="#F4A261"/></svg>`;
 
 const ESTADOS = {
-  PUBLICADA: ["📢 Publicada", "info"], ASIGNADA: ["🤝 Asignada", "sol"], EN_RECOGIDA: ["🚚 En recogida", "violeta"],
-  EN_TRANSITO: ["🚚 En tránsito", "violeta"], ENTREGADA: ["✅ Entregada", "exito"], CANCELADA: ["Cancelada", "gris"],
-  VENCIDA: ["Vencida", "gris"], SUGERIDA: ["⏳ Por aceptar", "acento"], ACEPTADA: ["Aceptada", "exito"],
+  PUBLICADA: ["Publicada", "info"], ASIGNADA: ["Asignada", "sol"], EN_RECOGIDA: ["En recogida", "violeta"],
+  EN_TRANSITO: ["En tránsito", "violeta"], ENTREGADA: ["Entregada", "exito"], CANCELADA: ["Cancelada", "gris"],
+  VENCIDA: ["Vencida", "gris"], SUGERIDA: ["Por aceptar", "acento"], ACEPTADA: ["Aceptada", "exito"],
   RECHAZADA: ["Rechazada", "gris"], EXPIRADA: ["Sin respuesta", "gris"], DISPONIBLE: ["Disponible", "info"],
   TOMADA: ["Tomada", "violeta"], RECOGIDA: ["Recogida", "violeta"],
 };
 const chip = (e) => { const [t, c] = ESTADOS[e] || [e, "gris"]; return `<span class="chip chip-${c}">${esc(t)}</span>`; };
-const estadoTexto = (e) => (ESTADOS[e] ? ESTADOS[e][0].replace(/^\S+\s/, "") : e);
+const estadoTexto = (e) => (ESTADOS[e] ? ESTADOS[e][0] : e);
 const ACTIVOS = ["PUBLICADA", "ASIGNADA", "EN_RECOGIDA", "EN_TRANSITO"];
 
 /* ---------------- sesión y API ---------------- */
@@ -151,17 +167,21 @@ async function subirFoto(donacionId, archivo, etapa) {
   return api(`/donaciones/${donacionId}/fotos/`, { metodo: "POST", datos: fd });
 }
 
-/* ---------- visual por categoría (emoji + color) ---------- */
+/* ---------- visual por categoría (ícono + color) ---------- */
 const CATEGORIAS_VISUAL = {
-  "Frutas y verduras": ["🍎", "#FDE2D6"], "Panadería": ["🥖", "#FFF0C9"], "Lácteos": ["🥛", "#E1F0FA"],
-  "Carnes y pescados": ["🍗", "#FCE1E4"], "Granos y cereales": ["🌾", "#F7EBD3"], "Enlatados": ["🥫", "#EFE8FB"],
-  "Comidas preparadas": ["🍲", "#FDE6CF"], "Bebidas": ["🧃", "#DDF4EC"],
+  "Frutas y verduras": ["manzana", "#FDE2D6", "#C2502E"], "Panadería": ["pan", "#FFF0C9", "#A8730A"], "Lácteos": ["botella", "#E1F0FA", "#2F7DB3"],
+  "Carnes y pescados": ["carne", "#FCE1E4", "#B8435A"], "Granos y cereales": ["trigo", "#F7EBD3", "#9A6B1F"], "Enlatados": ["lata", "#EFE8FB", "#6E4FB0"],
+  "Comidas preparadas": ["olla", "#FDE6CF", "#C25F1A"], "Bebidas": ["vaso", "#DDF4EC", "#2C8A68"],
 };
-const catVisual = (nombre) => CATEGORIAS_VISUAL[nombre] || ["🧺", "#FFF4D6"];
+/** Devuelve [ícono HTML, color de fondo] de la categoría. */
+const catVisual = (nombre) => {
+  const [ic, fondo, trazo] = CATEGORIAS_VISUAL[nombre] || ["cesta", "#FFF4D6", "#A8730A"];
+  return [`<span class="cat-icono" style="color:${trazo}">${icono(ic)}</span>`, fondo];
+};
 function miniatura(d, clase = "miniatura") {
-  const [emoji, fondo] = catVisual(d.categoria);
+  const [ic, fondo] = catVisual(d.categoria);
   return d.foto ? `<div class="${clase}"><img src="${esc(d.foto)}" alt="Foto de ${esc(d.descripcion)}" loading="lazy"></div>`
-    : `<div class="${clase}" style="background:${fondo}" aria-hidden="true">${emoji}</div>`;
+    : `<div class="${clase}" style="background:${fondo}" aria-hidden="true">${ic}</div>`;
 }
 const estrellas = (n) => `<span class="estrellas-fijas" aria-label="${n} de 5">${"★".repeat(n)}<span style="color:#E6DCCF">${"★".repeat(5 - n)}</span></span>`;
 
@@ -195,8 +215,7 @@ const campo = (nombre, etiqueta, tipo, valor = "", ph = "", extra = "") => `
   <div class="campo" data-campo="${nombre}"><label for="c-${nombre}">${esc(etiqueta)}</label>
   <input id="c-${nombre}" name="${nombre}" type="${tipo}" value="${esc(valor)}" placeholder="${esc(ph)}" ${extra}>
   <p class="error-campo" id="e-${nombre}"></p></div>`;
-const EMOJI_VACIO = { caja: "📦", reloj: "⏳", camion: "🚲", lista: "📋", medalla: "🏅", grafico: "📈", campana: "🔔", mapa: "🗺️", alerta: "😕", cesta: "🧺", ruta: "🛣️", edificio: "🏠" };
-const vacio = (ic, t, txt, accion = "") => `<div class="vacio">${EMOJI_VACIO[ic] ? `<span class="vacio-emoji">${EMOJI_VACIO[ic]}</span>` : icono(ic)}<h3>${esc(t)}</h3><p>${esc(txt)}</p>${accion}</div>`;
+const vacio = (ic, t, txt, accion = "") => `<div class="vacio"><span class="vacio-icono">${icono(ic)}</span><h3>${esc(t)}</h3><p>${esc(txt)}</p>${accion}</div>`;
 const esqueleto = () => `<div class="esqueleto"><div></div><div></div><div></div></div>`;
 const estadoError = (e) => vacio("alerta", "No se pudo cargar", e.message, `<button class="btn btn-secundario" id="reintentar">Reintentar</button>`);
 function errorEnCampos(form, e) {
@@ -231,7 +250,7 @@ function tarjetaDonacion(d) {
     ${miniatura(d)}
     <div class="td-cuerpo">
       <strong>${esc(d.descripcion)}</strong>
-      <div class="td-meta">${esc(d.codigo)} · ${fmt.kg(d.peso_estimado_kg)} · ${esc(d.categoria)}${frio ? " · ❄️" : ""}</div>
+      <div class="td-meta">${esc(d.codigo)} · ${fmt.kg(d.peso_estimado_kg)} · ${esc(d.categoria)}${frio ? "· ": ""}</div>
       ${otro ? `<div class="td-meta">${esc(otro)}</div>` : ""}
       <div class="td-fila">${chip(d.estado)}${ACTIVOS.includes(d.estado) ? `<span class="td-vence">Apto hasta ${fmt.fecha(d.fecha_limite_consumo)}</span>` : ""}</div>
       ${d.codigo_entrega && ACTIVOS.includes(d.estado) ? `<div class="codigo-entrega">Código de entrega <b>${esc(d.codigo_entrega)}</b></div>` : ""}
@@ -261,11 +280,11 @@ function marco() {
       <div class="marca">${logo()}<span>ReParte</span></div>
       <nav class="nav-lateral" aria-label="Menú">${items.map(([r, t, i]) => `<a href="#/${r}" data-ruta="${r}">${icono(i)}<span>${t}</span></a>`).join("")}</nav>
       <div class="lateral-pie"><div class="usuario-mini"><strong>${esc(nombreVisible())}</strong><span>${ROL_TEXTO[YO.rol] || ""}${YO.region ? ` · ${esc(YO.region.nombre)}` : ""}</span></div>
-      <button class="btn-fantasma boton-instalar" data-instalar type="button">📲 Instalar app</button>
+      <button class="btn-fantasma boton-instalar" data-instalar type="button">${icono("descargar")} Instalar app</button>
       <button class="btn-fantasma" data-salir type="button">${icono("salir")} Salir</button></div>
     </aside>
     <header class="barra"><div class="marca marca-movil">${logo(28)}</div><h1 id="titulo" class="barra-titulo"></h1>
-      <button class="btn-icono solo-movil boton-instalar" data-instalar type="button" aria-label="Instalar app">📲</button>
+      <button class="btn-icono solo-movil boton-instalar" data-instalar type="button" aria-label="Instalar app">${icono("descargar")}</button>
       <a href="#/notificaciones" class="campana" aria-label="Notificaciones">${icono("campana")}<span id="badge" class="badge" hidden></span></a>
       <button class="btn-icono solo-movil" data-salir type="button" aria-label="Salir">${icono("salir")}</button></header>
     <main id="vista" class="vista"></main>
@@ -328,12 +347,12 @@ function salir() { limpiar(); sesion.cerrar(); YO = null; history.replaceState(n
 function vLogin() {
   document.title = "Ingresar · ReParte";
   const grupos = [...new Set(DEMO.map((d) => d.grupo))];
-  const EMO = { Donante: "🏪", Receptor: "🍽️", Voluntario: "🚲" };
+  const EMO = { Donante: "", Receptor: "", Voluntario: "" };
   $("#app").innerHTML = `<div class="login">
     <div class="login-marca">${logo(64)}<h1>ReParte</h1><p>Excedentes de alimentos que llegan a quien los necesita</p>
-      <div class="login-emojis" aria-hidden="true">🍎🥖🥛🍲🧃</div></div>
+</div>
     <form class="tarjeta login-form" id="f-login" novalidate>
-      <h2>¡Hola de nuevo! 👋</h2>
+      <h2>Ingresar</h2>
       ${campo("email", "Correo", "email", "", "tu@correo.com", 'autocomplete="username" required')}
       ${campo("password", "Contraseña", "password", "", "", 'autocomplete="current-password" required')}
       <p class="error-campo" id="e-general" role="alert"></p>
@@ -373,11 +392,11 @@ async function entrar(email, password) {
 function vEspera() {
   const o = YO.organizacion, rechazada = o.estado_verificacion === "RECHAZADA";
   document.title = "Verificación · ReParte";
-  $("#app").innerHTML = `<div class="espera">${logo(56)}<span class="grande">${rechazada ? "😔" : "⏳"}</span>
+  $("#app").innerHTML = `<div class="espera">${logo(56)}<span class="grande">${icono(rechazada ? "alerta" : "reloj")}</span>
     <h1 style="font-size:26px">${rechazada ? "Tu registro no fue aprobado" : "¡Registro recibido!"}</h1>
     <p class="ayuda" style="font-size:16px">${rechazada ? `Motivo: ${esc(o.motivo_rechazo || "no indicado")}. Escríbenos para revisarlo.`
       : `Estamos verificando a <b>${esc(o.razon_social)}</b>. Te avisaremos cuando puedas empezar a ${o.tipo === "DONANTE" ? "publicar excedentes" : "recibir donaciones"}.`}</p>
-    <div class="td-fila" style="justify-content:center"><button class="btn btn-secundario" id="revisar" type="button">🔄 Revisar de nuevo</button>
+    <div class="td-fila" style="justify-content:center"><button class="btn btn-secundario" id="revisar" type="button">Revisar de nuevo</button>
     <button class="btn btn-fantasma" data-salir type="button">${icono("salir")} Salir</button></div></div>`;
   $("[data-salir]").addEventListener("click", salir);
   $("#revisar").addEventListener("click", async () => { YO = await api("/auth/yo/"); if (organizacionPendiente()) aviso("Aún está en revisión."); else { marco(); location.hash = `#/${menu()[0][0]}`; navegar(); } });
@@ -390,22 +409,22 @@ async function vRegistro() {
   try { regiones = resultados(await api("/regiones/")); } catch { /* sin conexión */ }
   const st = { paso: 1, rol: null, datos: { region: regiones[0]?.id, tiene_refrigeracion: false, tiene_cava_frio: false, acepta_politica: false } };
   const ROLES = [
-    ["DONANTE", "🏪", "Quiero donar", "Supermercado, restaurante, panadería, productor…"],
-    ["RECEPTOR", "🍽️", "Quiero recibir", "Comedor, fundación, banco de alimentos, hogar de paso…"],
-    ["VOLUNTARIO", "🚲", "Quiero transportar", "Persona con moto, carro, bici o a pie"],
+    ["DONANTE", "tienda", "Quiero donar", "Supermercado, restaurante, panadería, productor…"],
+    ["RECEPTOR", "olla", "Quiero recibir", "Comedor, fundación, banco de alimentos, hogar de paso…"],
+    ["VOLUNTARIO", "bici", "Quiero transportar", "Persona con moto, carro, bici o a pie"],
   ];
   const CATS_ORG = {
     DONANTE: [["SUPERMERCADO", "Supermercado"], ["RESTAURANTE", "Restaurante"], ["PANADERIA", "Panadería"], ["PRODUCTOR", "Productor"], ["CENTRAL_ABASTOS", "Central de abastos"], ["OTRO", "Otro"]],
     RECEPTOR: [["COMEDOR", "Comedor comunitario"], ["FUNDACION", "Fundación"], ["BANCO_ALIMENTOS", "Banco de alimentos"], ["HOGAR_PASO", "Hogar de paso"], ["OTRO", "Otro"]],
   };
-  const VEHICULOS = [["A_PIE", "🚶 A pie"], ["BICICLETA", "🚲 Bicicleta"], ["MOTO", "🛵 Moto"], ["CARRO", "🚗 Carro"], ["CAMIONETA", "🛻 Camioneta"]];
+  const VEHICULOS = [["A_PIE", "A pie"], ["BICICLETA", "Bicicleta"], ["MOTO", "Moto"], ["CARRO", "Carro"], ["CAMIONETA", "Camioneta"]];
   const d = st.datos;
   const sel = (nombre, opciones, valor) => `<select id="c-${nombre}" name="${nombre}">${opciones.map(([k, t]) => `<option value="${k}" ${String(valor) === String(k) ? "selected" : ""}>${t}</option>`).join("")}</select>`;
   const guardar = () => {
     $$("#f-reg input, #f-reg select").forEach((i) => { if (!i.name) return; d[i.name] = i.type === "checkbox" ? i.checked : i.value; });
   };
   const pasoHtml = () => {
-    if (st.paso === 1) return `<div class="roles">${ROLES.map(([k, e, t, s]) => `<button type="button" class="rol-opcion ${st.rol === k ? "sel" : ""}" data-rol="${k}"><span class="emoji">${e}</span><div><strong>${t}</strong><span>${s}</span></div></button>`).join("")}</div>`;
+    if (st.paso === 1) return `<div class="roles">${ROLES.map(([k, e, t, s]) => `<button type="button" class="rol-opcion ${st.rol === k ? "sel" : ""}" data-rol="${k}"><span class="rol-icono">${icono(e)}</span><div><strong>${t}</strong><span>${s}</span></div></button>`).join("")}</div>`;
     if (st.paso === 2) return `<div class="fila-2">${campo("first_name", "Nombre", "text", d.first_name || "", "", 'autocomplete="given-name"')}${campo("last_name", "Apellido", "text", d.last_name || "", "", 'autocomplete="family-name"')}</div>
       ${campo("email", "Correo", "email", d.email || "", "tu@correo.com", 'autocomplete="email"')}
       ${campo("telefono", "Celular", "tel", d.telefono || "", "300 000 0000", 'autocomplete="tel"')}
@@ -413,7 +432,7 @@ async function vRegistro() {
       <div class="campo"><label for="c-region">Ciudad</label>${sel("region", regiones.map((r) => [r.id, `${r.nombre}, ${r.departamento}`]), d.region)}</div>`;
     if (st.rol === "VOLUNTARIO") return `<div class="campo"><label for="c-tipo_vehiculo">¿Cómo te movilizas?</label>${sel("tipo_vehiculo", VEHICULOS, d.tipo_vehiculo || "MOTO")}</div>
       ${campo("capacidad_kg", "¿Cuántos kg puedes llevar?", "number", d.capacidad_kg || "", "40", 'min="1" step="1" inputmode="numeric"')}
-      <label class="interruptor"><input type="checkbox" name="tiene_cava_frio" ${d.tiene_cava_frio ? "checked" : ""}> Tengo nevera portátil o cava de frío ❄️</label>
+      <label class="interruptor"><input type="checkbox"name="tiene_cava_frio"${d.tiene_cava_frio ? "checked": ""}>Tengo nevera portátil o cava de frío </label>
       ${politica()}`;
     return `${campo("razon_social", "Nombre de la organización", "text", d.razon_social || "")}
       <div class="fila-2">${campo("nit", "NIT", "text", d.nit || "", "900123456-7")}
@@ -421,18 +440,18 @@ async function vRegistro() {
       ${campo("direccion", "Dirección", "text", d.direccion || "", "Calle 1 # 2-3, barrio")}
       <div class="campo"><label>Ubicación en el mapa <span class="ayuda">(toca el mapa para marcarla)</span></label>
         <div id="mapa-reg" class="mapa mapa-pequeno"></div>
-        <div class="td-fila"><button type="button" class="btn btn-secundario btn-pequeno" id="mi-ubic">📍 Usar mi ubicación</button><span class="ayuda" id="txt-ubic">${d.latitud ? `${Number(d.latitud).toFixed(5)}, ${Number(d.longitud).toFixed(5)}` : "Sin marcar"}</span></div>
+        <div class="td-fila"><button type="button" class="btn btn-secundario btn-pequeno" id="mi-ubic">${icono("pin")} Usar mi ubicación</button><span class="ayuda" id="txt-ubic">${d.latitud ? `${Number(d.latitud).toFixed(5)}, ${Number(d.longitud).toFixed(5)}` : "Sin marcar"}</span></div>
         <p class="error-campo" id="e-latitud"></p></div>
       ${st.rol === "RECEPTOR" ? `<div class="fila-2">${campo("capacidad_kg_dia", "Kg que pueden recibir por día", "number", d.capacidad_kg_dia || "", "100", 'min="1" inputmode="numeric"')}
         ${campo("personas_atendidas", "Personas que atienden por semana", "number", d.personas_atendidas || "", "200", 'min="0" inputmode="numeric"')}</div>
-        <label class="interruptor"><input type="checkbox" name="tiene_refrigeracion" ${d.tiene_refrigeracion ? "checked" : ""}> Tenemos nevera o cuarto frío ❄️</label>` : ""}
+        <label class="interruptor"><input type="checkbox"name="tiene_refrigeracion"${d.tiene_refrigeracion ? "checked": ""}>Tenemos nevera o cuarto frío </label>`: ""}
       <div class="campo" style="margin-top:12px"><label for="c-documento_soporte">RUT o certificado de existencia (opcional)</label><input id="c-documento_soporte" type="file" accept=".pdf,image/*"></div>
       ${politica()}`;
   };
   const politica = () => `<label class="interruptor"><input type="checkbox" name="acepta_politica" ${d.acepta_politica ? "checked" : ""}> Autorizo el tratamiento de mis datos personales (Ley 1581 de 2012)</label><p class="error-campo" id="e-acepta_politica"></p>`;
   const pinta = () => {
     $("#app").innerHTML = `<div class="login" style="max-width:560px">
-      <div class="login-marca">${logo(48)}<h1 style="font-size:30px">Crear cuenta</h1><p>Súmate a la red que rescata alimentos 🌱</p></div>
+      <div class="login-marca">${logo(48)}<h1 style="font-size:30px">Crear cuenta</h1><p>Súmate a la red que rescata alimentos </p></div>
       <section class="tarjeta">${stepper(st.paso, ["Rol", "Tus datos", st.rol === "VOLUNTARIO" ? "Vehículo" : "Organización"])}
         <form id="f-reg" novalidate>${pasoHtml()}
         <div class="acciones">${st.paso > 1 ? `<button class="btn btn-secundario" type="button" id="atras">Atrás</button>` : `<button class="btn btn-fantasma" type="button" id="cancelar">Ya tengo cuenta</button>`}
@@ -476,7 +495,7 @@ async function vRegistro() {
     await conCarga($("#f-reg button[type=submit]"), async () => {
       try {
         await api("/auth/registro/", { metodo: "POST", datos: fd });
-        aviso("¡Cuenta creada! 🎉");
+        aviso("¡Cuenta creada! ");
         await entrar(d.email, d.password);
       } catch (err) {
         if (err.status === 400 && typeof err.data?.detalle === "object") {
@@ -499,17 +518,17 @@ async function vInicioDonante(v) {
   const lista = resultados(act);
   const hora = new Date().getHours();
   const saludo = hora < 12 ? "Buenos días" : hora < 19 ? "Buenas tardes" : "Buenas noches";
-  v.innerHTML = `<p class="saludo">${saludo} ☀️</p><p class="subsaludo">${esc(YO.organizacion?.razon_social)}</p>
+  v.innerHTML = `<p class="saludo">${saludo} </p><p class="subsaludo">${esc(YO.organizacion?.razon_social)}</p>
     <section class="tarjeta-impacto">
-      <div><span class="etq">🌱 Has rescatado</span><strong class="cifra">${fmt.kg(imp.kg_rescatados)}</strong>
+      <div><span class="etq">Has rescatado</span><strong class="cifra">${fmt.kg(imp.kg_rescatados)}</strong>
       <span class="etq">${imp.donaciones_entregadas} ${imp.donaciones_entregadas === 1 ? "donación entregada" : "donaciones entregadas"} · ≈ ${fmt.num(imp.raciones_equivalentes)} raciones</span></div>
       <a class="btn btn-claro" href="#/impacto">Ver impacto</a>
     </section>
     <div class="accesos">
-      <a class="acceso c1" href="#/publicar"><span>📸</span>Publicar excedente<small>Con foto, en 1 minuto</small></a>
-      <a class="acceso c2" href="#/recurrentes"><span>🔁</span>Automáticas<small>${rec.filter((r) => r.activa).length} activas</small></a>
-      <a class="acceso c3" href="#/certificados"><span>🏅</span>Certificados<small>Descarga en PDF</small></a>
-      <a class="acceso c4" href="#/ranking"><span>🏆</span>Ranking<small>Donantes que más rescatan</small></a>
+      <a class="acceso c1" href="#/publicar"><span>${icono("camara")}</span>Publicar excedente<small>Con foto, en 1 minuto</small></a>
+      <a class="acceso c2" href="#/recurrentes"><span>${icono("repetir")}</span>Automáticas<small>${rec.filter((r) => r.activa).length} activas</small></a>
+      <a class="acceso c3" href="#/certificados"><span>${icono("medalla")}</span>Certificados<small>Descarga en PDF</small></a>
+      <a class="acceso c4" href="#/ranking"><span>${icono("estrella")}</span>Ranking<small>Donantes que más rescatan</small></a>
     </div>
     <div class="seccion-cab"><h2>Donaciones activas</h2><a href="#/donaciones">Ver todas</a></div>
     ${lista.length ? `<div class="lista">${lista.map(tarjetaDonacion).join("")}</div>`
@@ -527,17 +546,17 @@ async function vPublicar(v) {
     limite: local(sumarMin(ahora, 24 * 60)), desde: local(sumarMin(ahora, 30)), hasta: local(sumarMin(ahora, 180)),
     repetir: false, dias: [0, 1, 2, 3, 4, 5], horaRep: `${pad(ahora.getHours())}:00` };
   const UNIDADES = { KG: "kg", UNIDAD: "unidades", LITRO: "litros", CAJA: "cajas" };
-  const CONDICIONES = { AMBIENTE: "🌤️ Ambiente", REFRIGERADO: "❄️ Refrigerado", CONGELADO: "🧊 Congelado" };
+  const CONDICIONES = { AMBIENTE: "Ambiente", REFRIGERADO: "Refrigerado", CONGELADO: "Congelado" };
 
   const pasoHtml = () => {
     if (st.paso === 1) return `
       <fieldset><legend>¿Qué vas a donar?</legend><div class="opciones-cat">${cats.map((c) =>
-        `<button type="button" class="opcion ${st.categoria === c.id ? "sel" : ""}" data-cat="${c.id}" aria-pressed="${st.categoria === c.id}" style="${st.categoria === c.id ? "" : `background:${catVisual(c.nombre)[1]}`}"><span class="emoji">${catVisual(c.nombre)[0]}</span><span>${esc(c.nombre)}</span></button>`).join("")}</div>
+        `<button type="button" class="opcion ${st.categoria === c.id ? "sel" : ""}" data-cat="${c.id}" aria-pressed="${st.categoria === c.id}" style="${st.categoria === c.id ? "" : `background:${catVisual(c.nombre)[1]}`}">${catVisual(c.nombre)[0]}<span>${esc(c.nombre)}</span></button>`).join("")}</div>
       <p class="error-campo" id="e-categoria"></p></fieldset>
       ${campo("descripcion", "Descripción", "text", st.descripcion, "Ej.: tomate, cebolla y papa en buen estado", 'maxlength="300"')}
       <fieldset><legend>Fotos <span class="ayuda">(opcional, hasta 4)</span></legend>
         <div class="fotos-picker">${st.fotos.map((f, i) => `<div class="foto-mini"><img src="${f.url}" alt="Foto ${i + 1}"><button type="button" data-quitar="${i}" aria-label="Quitar foto">×</button></div>`).join("")}
-        ${st.fotos.length < 4 ? `<label class="foto-agregar"><span>📷</span>Agregar<input type="file" accept="image/*" capture="environment" id="in-foto" hidden multiple></label>` : ""}</div>
+        ${st.fotos.length < 4 ? `<label class="foto-agregar">${icono("camara")}Agregar<input type="file" accept="image/*" capture="environment" id="in-foto" hidden multiple></label>` : ""}</div>
         <p class="ayuda" style="margin-top:6px">Una buena foto ayuda a que el receptor decida más rápido.</p></fieldset>`;
     if (st.paso === 2) return `
       <div class="fila-campos">${campo("cantidad", "Cantidad", "number", st.cantidad, "40", 'min="0.1" step="0.1" inputmode="decimal"')}
@@ -551,7 +570,7 @@ async function vPublicar(v) {
     return `<div class="fila-2">${campo("recogida_desde", "Se puede recoger desde", "datetime-local", st.desde)}
       ${campo("recogida_hasta", "Hasta", "datetime-local", st.hasta)}</div>
       <section class="tarjeta" style="margin-bottom:16px;background:var(--cielo-suave);border:0">
-        <label class="interruptor"><input type="checkbox" id="repetir" ${st.repetir ? "checked" : ""}> 🔁 Esto sobra seguido: publicarlo automáticamente</label>
+        <label class="interruptor"><input type="checkbox"id="repetir"${st.repetir ? "checked": ""}>Esto sobra seguido: publicarlo automáticamente</label>
         ${st.repetir ? `<p class="ayuda" style="margin:6px 0 10px">Se publicará solo los días marcados a la hora indicada.</p>
           <div class="dias">${DIAS_CORTOS.map((d, i) => `<button type="button" class="dia ${st.dias.includes(i) ? "sel" : ""}" data-dia="${i}" aria-label="${DIAS_LARGOS[i]}" aria-pressed="${st.dias.includes(i)}">${d}</button>`).join("")}</div>
           <div class="campo" style="margin:12px 0 0;max-width:200px"><label for="c-hora">Hora</label><input id="c-hora" type="time" value="${st.horaRep}"></div>
@@ -570,7 +589,7 @@ async function vPublicar(v) {
     v.innerHTML = `<div class="formulario">${stepper(st.paso, ["Qué donas", "Cantidad", "Recogida"])}
       <form id="f" novalidate>${pasoHtml()}
       <div class="acciones">${st.paso > 1 ? `<button class="btn btn-secundario" type="button" id="atras">Atrás</button>` : "<span></span>"}
-      <button class="btn ${st.paso < 3 ? "btn-primario" : "btn-acento"}" type="submit">${st.paso < 3 ? "Siguiente" : "🚀 Publicar"}</button></div></form></div>`;
+      <button class="btn ${st.paso < 3 ? "btn-primario" : "btn-acento"}" type="submit">${st.paso < 3 ? "Siguiente" : "Publicar"}</button></div></form></div>`;
     const f = $("#f");
     $$("[data-cat]", f).forEach((b) => b.addEventListener("click", () => { guardar(); st.categoria = Number(b.dataset.cat); pinta(); }));
     $$("[data-cond]", f).forEach((b) => b.addEventListener("click", () => { guardar(); st.condicion = b.dataset.cond; pinta(); }));
@@ -637,10 +656,10 @@ async function vPublicar(v) {
           await api("/recurrentes/", { metodo: "POST", datos: { categoria: st.categoria, descripcion: st.descripcion, cantidad: st.cantidad,
             unidad: st.unidad, peso_estimado_kg: st.unidad !== "KG" ? st.peso : undefined, condicion: st.condicion, dias: st.dias,
             hora_publicacion: st.horaRep, horas_para_recoger: horas(st.desde, st.hasta), horas_vida_util: horas(st.desde, st.limite) } });
-          aviso("🔁 Quedó programada la publicación automática");
+          aviso("Quedó programada la publicación automática");
         }
         const sug = d.asignaciones.find((a) => a.estado === "SUGERIDA");
-        aviso(sug ? `¡Publicada! Sugerida a ${sug.receptor} 🎉` : "¡Publicada! Te avisamos cuando alguien la tome.");
+        aviso(sug ? `¡Publicada! Sugerida a ${sug.receptor} `: "¡Publicada! Te avisamos cuando alguien la tome.");
         location.hash = `#/donacion/${d.id}`;
       } catch (err) { errorEnCampos($("#f"), err); }
     });
@@ -671,16 +690,16 @@ async function vDonacion(v, id) {
   const cancelable = esDonante && ["PUBLICADA", "ASIGNADA", "EN_RECOGIDA"].includes(d.estado);
   const enCamino = ["EN_RECOGIDA", "EN_TRANSITO"].includes(d.estado) && YO.rol !== "VOLUNTARIO";
   const portada = d.fotos.find((f) => f.etapa === "PUBLICACION");
-  const [emoji, fondo] = catVisual(d.categoria);
+  const [ic, fondo] = catVisual(d.categoria);
   v.innerHTML = `<button class="volver" type="button" id="volver">${icono("atras")} Volver</button>
   <div class="detalle"><div style="display:grid;gap:16px">
     <section class="tarjeta cab-detalle">
-      ${portada ? `<img class="portada-foto" src="${esc(portada.url)}" alt="Foto de ${esc(d.descripcion)}">` : `<div style="height:110px;border-radius:18px;background:${fondo};display:grid;place-items:center;font-size:56px" aria-hidden="true">${emoji}</div>`}
+      ${portada ? `<img class="portada-foto" src="${esc(portada.url)}" alt="Foto de ${esc(d.descripcion)}">` : `<div style="height:110px;border-radius:18px;background:${fondo};display:grid;place-items:center" class="portada-cat" aria-hidden="true">${ic}</div>`}
       <div class="td-fila">${chip(d.estado)}<span class="td-meta">${esc(d.codigo)}</span></div>
       <h2>${esc(d.descripcion)}</h2>
-      ${d.codigo_entrega && ACTIVOS.includes(d.estado) ? `<div class="codigo-grande"><span>🔑 Dale este código al voluntario cuando llegue</span><strong>${esc(d.codigo_entrega)}</strong></div>` : ""}
+      ${d.codigo_entrega && ACTIVOS.includes(d.estado) ? `<div class="codigo-grande"><span>Dale este código al voluntario cuando llegue</span><strong>${esc(d.codigo_entrega)}</strong></div>`: ""}
       <div class="datos" style="margin-top:8px">
-        <div><span>Categoría</span><strong>${emoji} ${esc(d.categoria)}</strong></div>
+        <div><span>Categoría</span><strong>${ic} ${esc(d.categoria)}</strong></div>
         <div><span>Cantidad</span><strong>${d.unidad === "KG" ? fmt.kg(d.cantidad) : `${fmt.num(d.cantidad)} ${esc(d.unidad_display.toLowerCase())} · ${fmt.kg(d.peso_estimado_kg)}`}</strong></div>
         <div><span>Conservación</span><strong>${esc(d.condicion_display)}</strong></div>
         <div><span>Apto hasta</span><strong>${fmt.fecha(d.fecha_limite_consumo)}</strong></div>
@@ -692,30 +711,30 @@ async function vDonacion(v, id) {
       ${d.motivo_cancelacion ? `<p class="nota">Motivo: ${esc(d.motivo_cancelacion)}</p>` : ""}
       ${cancelable ? `<div><button class="btn btn-peligro" id="cancelar" type="button">Cancelar donación</button></div>` : ""}
     </section>
-    ${enCamino ? `<section class="tarjeta" style="display:flex;flex-direction:column;gap:10px"><div class="td-fila" style="justify-content:space-between"><h3>🚚 Seguimiento en vivo</h3><span class="vivo">En vivo</span></div>
+    ${enCamino ? `<section class="tarjeta"style="display:flex;flex-direction:column;gap:10px"><div class="td-fila"style="justify-content:space-between"><h3>Seguimiento en vivo</h3><span class="vivo">En vivo</span></div>
       <div id="mapa" class="mapa" style="height:300px"></div><p class="estado-ubicacion" id="estado-seg">Buscando al voluntario…</p></section>` : ""}
     ${d.puede_calificar ? `<section class="tarjeta" id="calificar" style="display:flex;flex-direction:column;gap:12px;background:var(--sol-suave);border:0">
-      <h3>⭐ ¿Cómo llegó la donación?</h3>
+      <h3>¿Cómo llegó la donación?</h3>
       <div><p class="ayuda">Calidad del alimento</p><div class="estrellas" data-grupo="calidad">${[1, 2, 3, 4, 5].map((n) => `<button type="button" data-n="${n}" aria-label="${n} estrellas">★</button>`).join("")}</div></div>
       ${d.recogida?.voluntario ? `<div><p class="ayuda">Servicio de ${esc(d.recogida.voluntario)}</p><div class="estrellas" data-grupo="servicio">${[1, 2, 3, 4, 5].map((n) => `<button type="button" data-n="${n}" aria-label="${n} estrellas">★</button>`).join("")}</div></div>` : ""}
       <div class="campo" style="margin:0"><label for="c-coment">Comentario (opcional)</label><input id="c-coment" maxlength="300" placeholder="Ej.: llegó fresco y a tiempo"></div>
       <button class="btn btn-primario" id="enviar-cal" type="button" style="align-self:flex-start">Enviar calificación</button></section>` : ""}
-    ${d.calificacion ? `<section class="tarjeta"><h3 style="margin-bottom:8px">⭐ Calificación del receptor</h3>
+    ${d.calificacion ? `<section class="tarjeta"><h3 style="margin-bottom:8px">Calificación del receptor</h3>
       <p>Alimento: ${estrellas(d.calificacion.calidad_alimento)}</p>
       ${d.calificacion.servicio_voluntario ? `<p>Voluntario: ${estrellas(d.calificacion.servicio_voluntario)}</p>` : ""}
       ${d.calificacion.comentario ? `<p class="ayuda" style="margin-top:6px">“${esc(d.calificacion.comentario)}”</p>` : ""}</section>` : ""}
-    ${d.certificado ? `<section class="tarjeta"><div class="td-fila" style="margin-bottom:8px"><span style="font-size:24px">🏅</span><h3>Certificado ${esc(d.certificado.consecutivo)}</h3></div>
+    ${d.certificado ? `<section class="tarjeta"><div class="td-fila"style="margin-bottom:8px"><span style="font-size:24px"></span><h3>Certificado ${esc(d.certificado.consecutivo)}</h3></div>
       <p>${fmt.kg(d.certificado.kg)} entregados el ${fmt.dia(d.certificado.emitido_en)}.</p><p class="hash" title="Huella SHA-256">${esc(d.certificado.hash)}</p>
-      ${esDonante ? `<button class="btn btn-secundario" id="pdf" type="button" style="margin-top:10px">📄 Descargar PDF</button>` : ""}</section>` : ""}
-    ${d.fotos.length ? `<section class="tarjeta"><h3 style="margin-bottom:10px">📷 Fotos</h3><div class="galeria">${d.fotos.map((f) =>
+      ${esDonante ? `<button class="btn btn-secundario" id="pdf" type="button" style="margin-top:10px">${icono("documento")} Descargar PDF</button>` : ""}</section>` : ""}
+    ${d.fotos.length ? `<section class="tarjeta"><h3 style="margin-bottom:10px">Fotos</h3><div class="galeria">${d.fotos.map((f) =>
       `<figure><a href="${esc(f.url)}" target="_blank" rel="noopener"><img src="${esc(f.url)}" alt="Foto de ${esc(f.etapa_display)}" loading="lazy"></a><figcaption>${esc(f.etapa_display)}</figcaption></figure>`).join("")}</div></section>` : ""}
-    ${esDonante && ACTIVOS.includes(d.estado) && d.fotos.filter((f) => f.etapa === "PUBLICACION").length < 4 ? `<label class="btn btn-secundario" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" id="mas-foto" hidden></label>` : ""}
+    ${esDonante && ACTIVOS.includes(d.estado) && d.fotos.filter((f) => f.etapa === "PUBLICACION").length < 4 ? `<label class="btn btn-secundario" style="align-self:flex-start">${icono("camara")} Agregar foto<input type="file" accept="image/*" id="mas-foto" hidden></label>` : ""}
     ${(esDonante || esAdmin) && d.asignaciones.length ? `<section class="tarjeta"><h3 style="margin-bottom:8px">Intentos de asignación</h3><div class="tabla-scroll"><table class="tabla">
       <tr><th>#</th><th>Receptor</th><th>Puntaje</th><th>Distancia</th><th>Estado</th></tr>
       ${d.asignaciones.map((a) => `<tr><td>${a.intento}</td><td>${esc(a.receptor)}</td><td>${a.origen === "SOLICITUD" ? "Elegida" : Number(a.puntaje).toFixed(3)}</td><td>${a.distancia_km} km</td><td>${chip(a.estado)}</td></tr>`).join("")}
       </table></div>${esAdmin ? `<button class="btn btn-secundario" id="explicar" type="button" style="margin-top:12px">Ver cálculo de candidatos</button><div id="explicacion"></div>` : ""}</section>` : ""}
   </div>
-  <section class="tarjeta"><h3 style="margin-bottom:16px">🕒 Línea de tiempo</h3><ol class="tiempo">${d.linea_tiempo.map((e) =>
+  <section class="tarjeta"><h3 style="margin-bottom:16px">Línea de tiempo</h3><ol class="tiempo">${d.linea_tiempo.map((e) =>
     `<li><strong>${esc(e.titulo)}</strong><span>${fmt.fecha(e.fecha)}${e.detalle ? ` · ${esc(e.detalle)}` : ""}</span></li>`).join("")}</ol></section>
   </div>`;
   $("#volver").addEventListener("click", () => (history.length > 1 ? history.back() : (location.hash = `#/${menu()[0][0]}`)));
@@ -733,7 +752,7 @@ async function vDonacion(v, id) {
   }));
   $("#mas-foto")?.addEventListener("change", async (e) => {
     const f = e.target.files[0]; if (!f) return;
-    try { await subirFoto(id, f, "PUBLICACION"); aviso("📷 Foto agregada"); navegar(); } catch (err) { aviso(err.message, "error"); }
+    try { await subirFoto(id, f, "PUBLICACION"); aviso("Foto agregada"); navegar(); } catch (err) { aviso(err.message, "error"); }
   });
   // calificación
   const valores = {};
@@ -745,7 +764,7 @@ async function vDonacion(v, id) {
     if (!valores.calidad) { aviso("Elige las estrellas de la calidad del alimento", "error"); return; }
     try {
       await api(`/donaciones/${id}/calificar/`, { metodo: "POST", datos: { calidad: valores.calidad, servicio: valores.servicio || null, comentario: $("#c-coment").value } });
-      aviso("¡Gracias por calificar! ⭐"); navegar();
+      aviso("¡Gracias por calificar! "); navegar();
     } catch (err) { aviso(err.message, "error"); }
   }));
   $("#explicar")?.addEventListener("click", async () => {
@@ -769,7 +788,7 @@ async function seguirEnVivo(id) {
   pin(s.origen, "#2E8B57", `Recoger: ${esc(s.origen.nombre)}`);
   pin(s.destino, "#F4A261", `Entregar: ${esc(s.destino.nombre)}`);
   L.polyline([[s.origen.lat, s.origen.lon], [s.destino.lat, s.destino.lon]], { color: "#6E625A", weight: 2, dashArray: "5 7" }).addTo(m);
-  const icon = L.divIcon({ className: "marcador-voluntario", html: "🚴", iconSize: [30, 30], iconAnchor: [15, 15] });
+  const icon = L.divIcon({ className: "marcador-voluntario", html: "<span></span>", iconSize: [22, 22], iconAnchor: [11, 11] });
   let marca = null;
   const actualizar = (s2) => {
     const txt = $("#estado-seg"); if (!txt) return;
@@ -787,22 +806,22 @@ async function seguirEnVivo(id) {
 async function vImpacto(v) {
   const imp = await api("/impacto/");
   titulo("Impacto");
-  v.innerHTML = panelImpacto(imp) + `<a class="acceso c4" href="#/ranking" style="margin-top:16px;flex-direction:row;align-items:center;gap:12px"><span>🏆</span><div>Ver el ranking<br><small>Quiénes más rescatan alimentos</small></div></a>`;
+  v.innerHTML = panelImpacto(imp) + `<a class="acceso c4" href="#/ranking" style="margin-top:16px;flex-direction:row;align-items:center;gap:12px"><span>${icono("estrella")}</span><div>Ver el ranking<br><small>Quiénes más rescatan alimentos</small></div></a>`;
 }
 function panelImpacto(imp) {
   const max = Math.max(1, ...imp.por_mes.map((m) => Number(m.kg)));
   const co2 = Number(imp.kg_co2_evitados);
-  const est = (e, valor, txt) => `<div class="estadistica"><span class="e-emoji">${e}</span><strong>${valor}</strong><span>${txt}</span></div>`;
+  const est = (e, valor, txt) => `<div class="estadistica"><span class="e-icono">${icono(e)}</span><strong>${valor}</strong><span>${txt}</span></div>`;
   return `<p class="ayuda" style="margin-bottom:12px">Alcance: <b>${esc(imp.alcance)}</b></p>
     <div class="estadisticas">
-      ${est("🌱", fmt.kg(imp.kg_rescatados), "rescatados")}
-      ${est("📦", fmt.num(imp.donaciones_entregadas), "donaciones entregadas")}
-      ${est("🍽️", fmt.num(imp.raciones_equivalentes), "raciones equivalentes")}
-      ${est("🏠", fmt.num(imp.receptores_atendidos), "receptores atendidos")}
-      ${est("🚲", fmt.num(imp.voluntarios_activos), "voluntarios activos")}
-      ${est("⭐", imp.calificacion_promedio ? `${imp.calificacion_promedio}/5` : "—", "calidad promedio")}
+      ${est("caja", fmt.kg(imp.kg_rescatados), "rescatados")}
+      ${est("check", fmt.num(imp.donaciones_entregadas), "donaciones entregadas")}
+      ${est("olla", fmt.num(imp.raciones_equivalentes), "raciones equivalentes")}
+      ${est("edificio", fmt.num(imp.receptores_atendidos), "receptores atendidos")}
+      ${est("camion", fmt.num(imp.voluntarios_activos), "voluntarios activos")}
+      ${est("estrella", imp.calificacion_promedio ? `${imp.calificacion_promedio}/5`: "—", "calidad promedio")}
     </div>
-    <section class="tarjeta" style="margin-top:16px"><h3>📈 Kilos rescatados por mes</h3>
+    <section class="tarjeta"style="margin-top:16px"><h3>Kilos rescatados por mes</h3>
       ${imp.por_mes.length ? `<div class="grafico" role="img" aria-label="Gráfico de kilos por mes">${imp.por_mes.map((m) =>
         `<div class="barra-col"><span class="v">${fmt.num(m.kg)}</span><div class="b" style="height:${(Number(m.kg) / max) * 85}%"></div><small>${fmt.mes(m.mes)}</small></div>`).join("")}</div>`
       : vacio("grafico", "Aún no hay entregas", "Cuando se entregue la primera donación verás aquí el avance.")}
@@ -814,11 +833,11 @@ async function vCertificados(v) {
   titulo("Certificados");
   const certs = await api("/certificados/");
   v.innerHTML = certs.length ? `<div class="lista">${certs.map((c) => `<div class="tarjeta" style="display:flex;flex-direction:column;gap:6px">
-      <div class="td-fila" style="justify-content:space-between"><h3>🏅 ${esc(c.consecutivo)}</h3><span class="td-meta">${fmt.dia(c.emitido_en)}</span></div>
+      <div class="td-fila"style="justify-content:space-between"><h3>${esc(c.consecutivo)}</h3><span class="td-meta">${fmt.dia(c.emitido_en)}</span></div>
       <p>${esc(c.descripcion)} · <b>${fmt.kg(c.kg_certificados)}</b></p>
       <p class="td-meta">Entregado a ${esc(c.receptor || "—")} · ${esc(c.codigo_donacion)}</p>
       <p class="hash">${esc(c.hash_sha256)}</p>
-      <button class="btn btn-secundario btn-pequeno" data-pdf="${c.id}" data-nombre="${esc(c.consecutivo)}" type="button" style="align-self:flex-start;margin-top:4px">📄 Descargar PDF</button></div>`).join("")}</div>`
+      <button class="btn btn-secundario btn-pequeno" data-pdf="${c.id}" data-nombre="${esc(c.consecutivo)}" type="button" style="align-self:flex-start;margin-top:4px">${icono("documento")} Descargar PDF</button></div>`).join("")}</div>`
     : vacio("medalla", "Aún no tienes certificados", "Se emiten automáticamente cuando una donación se entrega.");
   $$("[data-pdf]", v).forEach((b) => b.addEventListener("click", () => conCarga(b, async () => {
     try { await descargar(`/certificados/${b.dataset.pdf}/pdf/`, `certificado_${b.dataset.nombre}.pdf`); } catch (e) { aviso(e.message, "error"); }
@@ -833,9 +852,9 @@ async function vRecurrentes(v) {
       <div class="td-fila" style="justify-content:space-between"><strong style="font-size:17px">${catVisual(r.categoria_nombre)[0]} ${esc(r.descripcion)}</strong>${r.activa ? '<span class="chip chip-exito">Activa</span>' : '<span class="chip chip-gris">Pausada</span>'}</div>
       <p class="td-meta">${fmt.num(r.cantidad)} ${r.unidad === "KG" ? "kg" : esc(r.unidad.toLowerCase())} · ${esc(r.categoria_nombre)}</p>
       <div class="dias">${DIAS_CORTOS.map((d, i) => `<span class="dia ${r.dias_lista.includes(i) ? "sel" : ""}" style="display:grid;place-items:center;width:34px;height:34px;font-size:13px">${d}</span>`).join("")}</div>
-      <p class="td-meta">🕕 A las ${r.hora_publicacion.slice(0, 5)} · se recoge en ${r.horas_para_recoger} h${r.ultima_publicacion ? ` · última vez: ${fmt.dia(r.ultima_publicacion + "T12:00:00")}` : ""}</p>
-      <div class="td-fila"><button class="btn btn-secundario btn-pequeno" data-alternar="${r.id}" data-activa="${r.activa}" type="button">${r.activa ? "⏸️ Pausar" : "▶️ Activar"}</button>
-      <button class="btn btn-fantasma btn-pequeno" data-borrar="${r.id}" type="button">🗑️ Eliminar</button></div></article>`).join("")}</div>`
+      <p class="td-meta">A las ${r.hora_publicacion.slice(0, 5)} · se recoge en ${r.horas_para_recoger} h${r.ultima_publicacion ? `· última vez: ${fmt.dia(r.ultima_publicacion + "T12:00:00")}`: ""}</p>
+      <div class="td-fila"><button class="btn btn-secundario btn-pequeno" data-alternar="${r.id}" data-activa="${r.activa}" type="button">${r.activa ? "Pausar" : "Activar"}</button>
+      <button class="btn btn-fantasma btn-pequeno" data-borrar="${r.id}" type="button">Eliminar</button></div></article>`).join("")}</div>`
     : vacio("reloj", "No tienes publicaciones automáticas", "Al publicar un excedente marca “publicarlo automáticamente”.")}
     <a class="btn btn-acento" href="#/publicar" style="margin-top:18px">${icono("mas")} Nueva publicación</a>`;
   $$("[data-alternar]", v).forEach((b) => b.addEventListener("click", async () => {
@@ -850,19 +869,19 @@ async function vRecurrentes(v) {
 async function vRanking(v) {
   titulo("Ranking");
   const r = await api("/impacto/ranking/");
-  const MED = ["🥇", "🥈", "🥉"];
-  const VEH = { A_PIE: "🚶", BICICLETA: "🚲", MOTO: "🛵", CARRO: "🚗", CAMIONETA: "🛻" };
-  const insignias = (l) => (l.length ? `<div class="insignias">${l.map((i) => `<span class="insignia">🎖️ ${esc(i)}</span>`).join("")}</div>` : "");
+  const MED = ["1", "2", "3"];
+  const VEH = { A_PIE: "A pie ·", BICICLETA: "Bicicleta ·", MOTO: "Moto ·", CARRO: "Carro ·", CAMIONETA: "Camioneta ·" };
+  const insignias = (l) => (l.length ? `<div class="insignias">${l.map((i) => `<span class="insignia">${esc(i)}</span>`).join("")}</div>` : "");
   const podio = (lista, sub) => (lista.length ? `<div class="podio">${lista.slice(0, 3).map((x, i) =>
     `<div class="podio-item p${i + 1}"><span class="medalla">${MED[i]}</span><strong>${esc(x.nombre)}</strong><small>${sub(x)}</small></div>`).join("")}</div>` : "");
   const filas = (lista, sub) => lista.map((x) => `<div class="fila-rank"><span class="pos">${x.posicion}</span><div style="flex:1"><strong>${esc(x.nombre)}</strong>
     <div class="td-meta">${sub(x)}</div>${insignias(x.insignias)}</div></div>`).join("");
   const subV = (x) => `${VEH[x.vehiculo] || ""} ${x.entregas} ${x.entregas === 1 ? "entrega" : "entregas"} · ${fmt.kg(x.kg)}`;
   const subD = (x) => `${fmt.kg(x.kg)} · ${x.donaciones} donaciones`;
-  v.innerHTML = `<p class="ayuda" style="margin-bottom:14px">Alcance: <b>${esc(r.alcance)}</b> · Gracias a quienes hacen posible el rescate 💚</p>
+  v.innerHTML = `<p class="ayuda"style="margin-bottom:14px">Alcance: <b>${esc(r.alcance)}</b>· Gracias a quienes hacen posible el rescate </p>
     <div class="detalle">
-      <section class="tarjeta"><h2 style="margin-bottom:14px">🚲 Voluntarios</h2>${r.voluntarios.length ? podio(r.voluntarios, subV) + filas(r.voluntarios, subV) : vacio("camion", "Aún sin entregas", "")}</section>
-      <section class="tarjeta"><h2 style="margin-bottom:14px">🏪 Donantes</h2>${r.donantes.length ? podio(r.donantes, subD) + filas(r.donantes, subD) : vacio("caja", "Aún sin donaciones entregadas", "")}</section>
+      <section class="tarjeta"><h2 style="margin-bottom:14px">Voluntarios</h2>${r.voluntarios.length ? podio(r.voluntarios, subV) + filas(r.voluntarios, subV) : vacio("camion", "Aún sin entregas", "")}</section>
+      <section class="tarjeta"><h2 style="margin-bottom:14px">Donantes</h2>${r.donantes.length ? podio(r.donantes, subD) + filas(r.donantes, subD) : vacio("caja", "Aún sin donaciones entregadas", "")}</section>
     </div>`;
 }
 
@@ -977,19 +996,19 @@ async function vOrganizacion(v, _p, editando = false) {
   const o = await api("/organizaciones/mia/");
   titulo("Mi organización");
   const c = o.capacidad || {};
-  const si = (b) => (b ? "✅ Sí" : "— No");
+  const si = (b) =>(b ? "Sí": "— No");
   const DIAS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
   const horario = (dia) => o.horarios.find((h) => h.dia_semana === dia);
   const cab = `<section class="tarjeta cab-detalle">
-      <span class="td-meta">${esc(o.categoria_display)} · ${esc(o.region.nombre)}</span><h2>🏠 ${esc(o.razon_social)}</h2>
+      <span class="td-meta">${esc(o.categoria_display)} · ${esc(o.region.nombre)}</span><h2>${esc(o.razon_social)}</h2>
       <div class="datos" style="margin-top:8px">
-        <div><span>NIT</span><strong>${esc(o.nit)}</strong></div><div><span>Estado</span><strong>${o.estado_verificacion === "VERIFICADA" ? "✅ Verificada" : esc(o.estado_verificacion)}</strong></div>
+        <div><span>NIT</span><strong>${esc(o.nit)}</strong></div><div><span>Estado</span><strong>${o.estado_verificacion === "VERIFICADA"? "Verificada": esc(o.estado_verificacion)}</strong></div>
         <div><span>Dirección</span><strong>${esc(o.direccion)}</strong></div><div><span>Teléfono</span><strong>${esc(o.telefono)}</strong></div>
       </div></section>`;
   if (!editando) {
     v.innerHTML = `<div class="detalle">${cab}
-    <section class="tarjeta"><div class="td-fila" style="justify-content:space-between;margin-bottom:12px"><h3>📦 Capacidad</h3>
-      <button class="btn btn-secundario btn-pequeno" id="editar" type="button">✏️ Editar</button></div><div class="datos">
+    <section class="tarjeta"><div class="td-fila"style="justify-content:space-between;margin-bottom:12px"><h3>Capacidad</h3>
+      <button class="btn btn-secundario btn-pequeno" id="editar" type="button">${icono("lapiz")} Editar</button></div><div class="datos">
       <div><span>Recibe por día</span><strong>${fmt.kg(c.capacidad_kg_dia)}</strong></div>
       <div><span>Personas por semana</span><strong>${fmt.num(c.personas_atendidas)}</strong></div>
       <div><span>Refrigeración</span><strong>${si(c.tiene_refrigeracion)}</strong></div>
@@ -998,21 +1017,21 @@ async function vOrganizacion(v, _p, editando = false) {
       <div><span>Radio de recepción</span><strong>${fmt.num(c.radio_max_km)} km</strong></div>
       <div><span>Nivel de necesidad</span><strong class="niveles" aria-label="${c.nivel_necesidad} de 5">${[1, 2, 3, 4, 5].map((n) => `<i class="${n <= c.nivel_necesidad ? "on" : ""}"></i>`).join("")}</strong></div>
     </div>
-    <h3 style="margin:20px 0 8px">🕒 Horario de recepción</h3>
+    <h3 style="margin:20px 0 8px">Horario de recepción</h3>
     ${o.horarios.length ? `<table class="tabla">${o.horarios.map((h) => `<tr><td>${esc(h.dia)}</td><td>${h.hora_inicio.slice(0, 5)} – ${h.hora_fin.slice(0, 5)}</td></tr>`).join("")}</table>` : `<p class="ayuda">Sin horario registrado.</p>`}
     <p class="nota">El nivel de necesidad lo asigna el administrador según la población que atienden.</p></section></div>`;
     $("#editar").addEventListener("click", () => vOrganizacion(v, null, true));
     return;
   }
   v.innerHTML = `<div class="detalle">${cab}
-    <form class="tarjeta" id="f-cap" novalidate><h3 style="margin-bottom:14px">✏️ Editar capacidad y horario</h3>
+    <form class="tarjeta"id="f-cap"novalidate><h3 style="margin-bottom:14px">Editar capacidad y horario</h3>
       <div class="fila-2">${campo("capacidad_kg_dia", "Kg que reciben por día", "number", Number(c.capacidad_kg_dia || 0), "", 'min="0.1" step="0.1"')}
       ${campo("personas_atendidas", "Personas por semana", "number", c.personas_atendidas ?? 0, "", 'min="0"')}</div>
       ${campo("radio_max_km", "Radio de recepción (km)", "number", Number(c.radio_max_km || 10), "", 'min="0.5" step="0.5"')}
-      <label class="interruptor"><input type="checkbox" name="acepta_perecederos" ${c.acepta_perecederos ? "checked" : ""}> 🍎 Recibimos perecederos</label>
-      <label class="interruptor"><input type="checkbox" name="tiene_refrigeracion" ${c.tiene_refrigeracion ? "checked" : ""}> ❄️ Tenemos nevera o cuarto frío</label>
-      <label class="interruptor"><input type="checkbox" name="tiene_congelacion" ${c.tiene_congelacion ? "checked" : ""}> 🧊 Tenemos congelador</label>
-      <h3 style="margin:18px 0 8px">🕒 Horario de recepción</h3>
+      <label class="interruptor"><input type="checkbox"name="acepta_perecederos"${c.acepta_perecederos ? "checked": ""}>Recibimos perecederos</label>
+      <label class="interruptor"><input type="checkbox"name="tiene_refrigeracion"${c.tiene_refrigeracion ? "checked": ""}>Tenemos nevera o cuarto frío</label>
+      <label class="interruptor"><input type="checkbox"name="tiene_congelacion"${c.tiene_congelacion ? "checked": ""}>Tenemos congelador</label>
+      <h3 style="margin:18px 0 8px">Horario de recepción</h3>
       <div style="display:grid;gap:8px">${DIAS.map((nombre, i) => { const h = horario(i); return `<div class="td-fila" style="gap:10px">
         <label class="interruptor" style="width:130px"><input type="checkbox" data-dia="${i}" ${h ? "checked" : ""}> ${nombre}</label>
         <input type="time" data-ini="${i}" value="${h ? h.hora_inicio.slice(0, 5) : "08:00"}" style="min-height:42px;border:2px solid var(--borde);border-radius:12px;padding:0 8px;font:inherit">
@@ -1028,7 +1047,7 @@ async function vOrganizacion(v, _p, editando = false) {
     const datos = { capacidad_kg_dia: f.capacidad_kg_dia.value, personas_atendidas: f.personas_atendidas.value, radio_max_km: f.radio_max_km.value,
       acepta_perecederos: f.acepta_perecederos.checked, tiene_refrigeracion: f.tiene_refrigeracion.checked, tiene_congelacion: f.tiene_congelacion.checked, horarios };
     await conCarga($("button[type=submit]", f), async () => {
-      try { await api("/organizaciones/mia/capacidad/", { metodo: "PUT", datos }); aviso("✅ Datos actualizados"); vOrganizacion(v); }
+      try { await api("/organizaciones/mia/capacidad/", { metodo: "PUT", datos }); aviso("Datos actualizados"); vOrganizacion(v); }
       catch (err) { errorEnCampos(f, err); }
     });
   });
@@ -1182,8 +1201,8 @@ async function vCerca(v) {
 async function vActiva(v, _p, entregada = null) {
   titulo("Mi recogida");
   if (entregada) {
-    v.innerHTML = `<div class="exito"><div class="circulo">🎉</div><h2>¡Donación entregada!</h2>
-      <p class="ayuda">${fmt.kg(entregada.peso_kg)} llegaron a ${esc(entregada.destino.razon_social)}. ¡Gracias por ayudar! 💚</p>
+    v.innerHTML = `<div class="exito"><div class="circulo">${icono("check")}</div><h2>¡Donación entregada!</h2>
+      <p class="ayuda">${fmt.kg(entregada.peso_kg)} llegaron a ${esc(entregada.destino.razon_social)}. ¡Gracias por ayudar! </p>
       <a class="btn btn-primario" href="#/cerca">Buscar otra recogida</a></div>`;
     return;
   }
@@ -1210,7 +1229,7 @@ async function vActiva(v, _p, entregada = null) {
       <a class="btn btn-secundario" href="${enlaceMapa(lugar.latitud, lugar.longitud)}" target="_blank" rel="noopener">${icono("mapa")} Abrir en el mapa</a>
       <form id="f" novalidate style="margin-top:8px">
         ${r.requiere_frio ? campo("temperatura", "Temperatura del producto (°C, opcional)", "number", "", "4", 'step="0.1" inputmode="decimal"') : ""}
-        <div class="campo"><label for="c-foto-paso">📷 Foto de la ${recogido ? "entrega" : "recogida"} (opcional)</label><input id="c-foto-paso" type="file" accept="image/*" capture="environment"></div>
+        <div class="campo"><label for="c-foto-paso">Foto de la ${recogido ? "entrega": "recogida"} (opcional)</label><input id="c-foto-paso"type="file"accept="image/*"capture="environment"></div>
         ${recogido ? `${campo("codigo", "Código que te da el receptor", "text", "", "000000", 'inputmode="numeric" maxlength="6" autocomplete="one-time-code" class="entrada-codigo"')}
           <button class="btn btn-primario btn-bloque" type="submit">${icono("check")} Confirmar entrega</button>`
         : `<button class="btn btn-primario btn-bloque" type="submit">Ya recogí la donación</button>`}
@@ -1308,20 +1327,20 @@ async function vPanel(v) {
   let region = "";
   const pinta = async () => {
     const imp = await api(`/impacto/${region ? `?region=${region}` : ""}`);
-    v.innerHTML = `<p class="saludo">Panel general 📊</p><p class="subsaludo">Así va el rescate de alimentos.</p>
-      ${pendientes.length ? `<a class="aviso-activa" href="#/verificaciones" style="color:inherit"><span>🏢 ${pendientes.length} ${pendientes.length === 1 ? "organización espera" : "organizaciones esperan"} verificación</span><span class="btn btn-primario btn-pequeno">Revisar</span></a>` : ""}
+    v.innerHTML = `<p class="saludo">Panel general </p><p class="subsaludo">Así va el rescate de alimentos.</p>
+      ${pendientes.length ? `<a class="aviso-activa"href="#/verificaciones"style="color:inherit"><span>${pendientes.length} ${pendientes.length === 1 ? "organización espera": "organizaciones esperan"} verificación</span><span class="btn btn-primario btn-pequeno">Revisar</span></a>`: ""}
       <div class="pestanas"><button class="pestana ${!region ? "sel" : ""}" data-r="">Todas</button>${regiones.map((r) =>
         `<button class="pestana ${String(r.id) === region ? "sel" : ""}" data-r="${r.id}">${esc(r.nombre)}</button>`).join("")}</div>
       ${panelImpacto(imp)}
       <section class="tarjeta" style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
-        <h3>📥 Reportes</h3>
+        <h3>Reportes</h3>
         <div class="fila-2">${campo("desde", "Desde", "date", "")}${campo("hasta", "Hasta", "date", "")}</div>
-        <div class="td-fila"><button class="btn btn-primario" id="excel" type="button">📊 Descargar Excel</button>
-          <button class="btn btn-acento" id="pdf-rep" type="button">📄 Descargar PDF</button></div>
+        <div class="td-fila"><button class="btn btn-primario" id="excel" type="button">${icono("descargar")} Descargar Excel</button>
+          <button class="btn btn-acento" id="pdf-rep" type="button">${icono("documento")} Descargar PDF</button></div>
         <p class="ayuda">El Excel trae el detalle de cada donación y hojas por mes, por donante y por receptor. Se filtra por la región elegida arriba.</p>
       </section>
       <section class="tarjeta" style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
-        <h3>⚙️ Simulación</h3>
+        <h3>Simulación</h3>
         <p class="ayuda">Ejecuta a mano lo que en producción haría Celery Beat cada minuto: expira sugerencias sin respuesta y reasigna, marca donaciones vencidas y publica las automáticas que tocan.</p>
         <button class="btn btn-secundario" id="procesar" type="button" style="align-self:flex-start">${icono("reloj")} Procesar ahora</button>
       </section>`;
@@ -1346,19 +1365,19 @@ async function vVerificaciones(v) {
   const lista = await api("/organizaciones/pendientes/");
   v.innerHTML = lista.length ? `<p class="ayuda" style="margin-bottom:14px">Revisa los datos y el documento antes de aprobar. Al aprobar, la organización puede empezar a usar ReParte.</p>
     <div class="lista">${lista.map((o) => `<article class="tarjeta tarjeta-pendiente">
-      <div class="td-fila" style="justify-content:space-between"><strong style="font-size:18px">${o.tipo === "DONANTE" ? "🏪" : "🍽️"} ${esc(o.razon_social)}</strong><span class="chip chip-sol">${o.tipo === "DONANTE" ? "Donante" : "Receptor"}</span></div>
+      <div class="td-fila"style="justify-content:space-between"><strong style="font-size:18px">${o.tipo === "DONANTE"? "": ""} ${esc(o.razon_social)}</strong><span class="chip chip-sol">${o.tipo === "DONANTE"? "Donante": "Receptor"}</span></div>
       <div class="datos">
         <div><span>Tipo</span><strong>${esc(o.categoria_display)}</strong></div><div><span>NIT</span><strong>${esc(o.nit)}</strong></div>
         <div><span>Ciudad</span><strong>${esc(o.region.nombre)}</strong></div><div><span>Dirección</span><strong>${esc(o.direccion)}</strong></div>
         <div><span>Contacto</span><strong>${esc(o.contacto?.nombre || "—")}</strong></div><div><span>Correo</span><strong style="word-break:break-all">${esc(o.contacto?.email || o.correo)}</strong></div>
         ${o.capacidad ? `<div><span>Capacidad</span><strong>${fmt.kg(o.capacidad.capacidad_kg_dia)}/día</strong></div><div><span>Personas/semana</span><strong>${fmt.num(o.capacidad.personas_atendidas)}</strong></div>` : ""}
       </div>
-      <p class="td-meta">Registrada ${fmt.relativo(o.creado_en)} · ${o.documento ? `<a href="${esc(o.documento)}" target="_blank" rel="noopener">📎 Ver documento</a>` : "sin documento adjunto"}</p>
-      <div class="td-fila"><button class="btn btn-primario" data-aprobar="${o.id}" type="button">✅ Aprobar</button>
+      <p class="td-meta">Registrada ${fmt.relativo(o.creado_en)} · ${o.documento ? `<a href="${esc(o.documento)}" target="_blank" rel="noopener">Ver documento</a>` : "sin documento adjunto"}</p>
+      <div class="td-fila"><button class="btn btn-primario" data-aprobar="${o.id}" type="button">Aprobar</button>
         <button class="btn btn-peligro" data-rechazar="${o.id}" type="button">Rechazar</button></div></article>`).join("")}</div>`
     : vacio("edificio", "No hay organizaciones por verificar", "Cuando alguien se registre como donante o receptor aparecerá aquí.");
   $$("[data-aprobar]", v).forEach((b) => b.addEventListener("click", () => conCarga(b, async () => {
-    await api(`/organizaciones/${b.dataset.aprobar}/verificar/`, { metodo: "POST", datos: { aprobada: true } }); aviso("✅ Organización aprobada"); navegar();
+    await api(`/organizaciones/${b.dataset.aprobar}/verificar/`, { metodo: "POST", datos: { aprobada: true } }); aviso("Organización aprobada"); navegar();
   })));
   $$("[data-rechazar]", v).forEach((b) => b.addEventListener("click", async () => {
     const r = await modal({ titulo: "¿Rechazar el registro?", confirmar: "Rechazar", peligro: true,
@@ -1376,7 +1395,7 @@ async function vNotificaciones(v) {
   titulo("Notificaciones");
   const lista = resultados(await api("/notificaciones/"));
   v.innerHTML = lista.length ? `<section class="tarjeta" style="padding:0;overflow:hidden">${lista.map((n) => `
-    <${n.donacion_id ? `a href="#/donacion/${n.donacion_id}"` : "div"} class="notif ${n.leida ? "" : "nueva"}" style="color:inherit;font-weight:inherit"><span style="font-size:22px">${{ NUEVA_ASIGNACION: "📢", DONACION_ACEPTADA: "🤝", DONACION_SOLICITADA: "🧺", RECOGIDA_DISPONIBLE: "🚲", VOLUNTARIO_ASIGNADO: "🚚", EN_TRANSITO: "🚚", ENTREGA_CONFIRMADA: "🎉", CALIFICACION: "⭐", VERIFICACION: "✅", NUEVA_ORGANIZACION: "🏢", DONACION_VENCIDA: "⌛", DONACION_CANCELADA: "✖️" }[n.tipo] || "🔔"}</span>
+    <${n.donacion_id ? `a href="#/donacion/${n.donacion_id}"` : "div"} class="notif ${n.leida ? "" : "nueva"}" style="color:inherit;font-weight:inherit">${icono({ NUEVA_ASIGNACION: "campana", DONACION_ACEPTADA: "check", DONACION_SOLICITADA: "cesta", RECOGIDA_DISPONIBLE: "pin", VOLUNTARIO_ASIGNADO: "camion", EN_TRANSITO: "camion", ENTREGA_CONFIRMADA: "check", CALIFICACION: "estrella", VERIFICACION: "check", NUEVA_ORGANIZACION: "edificio", DONACION_VENCIDA: "reloj", DONACION_CANCELADA: "alerta" }[n.tipo] || "campana")}
       <div><strong>${esc(n.titulo)}</strong><span>${esc(n.mensaje)}</span><small>${fmt.relativo(n.enviada_en)}</small></div></${n.donacion_id ? "a" : "div"}>`).join("")}</section>`
     : vacio("campana", "Sin notificaciones", "Aquí verás los avisos de tus donaciones y recogidas.");
   if (lista.some((n) => !n.leida)) await api("/notificaciones/leer-todas/", { metodo: "POST" });

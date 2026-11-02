@@ -1,6 +1,6 @@
 /* Service worker de ReParte: guarda la app para abrirla rápido y sin conexión.
    La API nunca se guarda en caché (los datos deben estar siempre actualizados). */
-const VERSION = "reparte-v2";
+const VERSION = "reparte-v3";
 const BASICOS = ["/", "/static/app/app.js", "/static/app/estilos.css", "/manifest.webmanifest",
   "/static/app/iconos/icono-192.png", "/static/app/iconos/icono-512.png"];
 
