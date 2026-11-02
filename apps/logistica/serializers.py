@@ -7,9 +7,11 @@ from .models import Certificado, Recogida
 
 
 class RecogidaSerializer(serializers.ModelSerializer):
+    donacion_id = serializers.IntegerField(read_only=True)
     codigo_donacion = serializers.CharField(source="donacion.codigo", read_only=True)
     descripcion = serializers.CharField(source="donacion.descripcion", read_only=True)
     categoria = serializers.CharField(source="donacion.categoria.nombre", read_only=True)
+    foto = serializers.SerializerMethodField()
     peso_kg = serializers.DecimalField(source="donacion.peso_estimado_kg", max_digits=8, decimal_places=2, read_only=True)
     condicion = serializers.CharField(source="donacion.get_condicion_display", read_only=True)
     requiere_frio = serializers.SerializerMethodField()
@@ -22,9 +24,13 @@ class RecogidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recogida
         # El código de verificación NO se envía al voluntario: lo da el receptor al recibir.
-        fields = ["id", "estado", "estado_display", "codigo_donacion", "descripcion", "categoria", "peso_kg",
+        fields = ["id", "donacion_id", "foto", "estado", "estado_display", "codigo_donacion", "descripcion", "categoria", "peso_kg",
                   "condicion", "requiere_frio", "recogida_hasta", "origen", "destino", "distancia_km",
                   "distancia_a_origen_km", "tomada_en", "recogida_en", "entregada_en"]
+
+    def get_foto(self, r):
+        f = r.donacion.fotos.filter(etapa="PUBLICACION").first()
+        return f.imagen.url if f else None
 
     def get_requiere_frio(self, r):
         return r.donacion.condicion != "AMBIENTE"

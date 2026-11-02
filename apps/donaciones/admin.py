@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CategoriaAlimento, Donacion, FotoDonacion
+from .models import Calificacion, CategoriaAlimento, Donacion, FotoDonacion, PublicacionRecurrente
 
 
 @admin.register(CategoriaAlimento)
@@ -20,3 +20,13 @@ class DonacionAdmin(admin.ModelAdmin):
     search_fields = ["codigo", "descripcion", "donante__razon_social"]
     readonly_fields = ["codigo", "creado_en", "actualizado_en"]
     inlines = [FotoInline]
+
+
+@admin.register(Calificacion)
+class CalificacionAdmin(admin.ModelAdmin):
+    list_display = ["donacion", "calidad_alimento", "servicio_voluntario", "creado_en"]
+
+
+@admin.register(PublicacionRecurrente)
+class RecurrenteAdmin(admin.ModelAdmin):
+    list_display = ["descripcion", "donante", "dias_semana", "hora_publicacion", "activa", "ultima_publicacion"]

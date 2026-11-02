@@ -16,7 +16,7 @@ from django.core.management.base import BaseCommand
 from django.db import connection, transaction
 from django.utils import timezone
 
-from apps.donaciones.models import CategoriaAlimento, Donacion
+from apps.donaciones.models import Calificacion, CategoriaAlimento, Donacion, PublicacionRecurrente
 from apps.emparejamiento.models import Asignacion
 from apps.logistica.models import Certificado, Recogida
 from apps.organizaciones.geo import distancia_km
@@ -113,10 +113,11 @@ class Command(BaseCommand):
         self.receptores = self.crear_receptores()
         self.voluntarios = self.crear_voluntarios()
         self.crear_donaciones()
+        self.crear_extras()
 
         self.stdout.write(self.style.SUCCESS("Datos de prueba cargados:"))
         for modelo in [Region, Organizacion, Usuario, PerfilVoluntario, CategoriaAlimento,
-                       Donacion, Asignacion, Recogida, Certificado, Notificacion]:
+                       Donacion, Asignacion, Recogida, Certificado, Calificacion, PublicacionRecurrente, Notificacion]:
             self.stdout.write(f"  {modelo._meta.verbose_name_plural:<25} {modelo.objects.count()}")
         self.stdout.write(f"\nUsuarios de prueba: <usuario>@{DOMINIO}  (ej. elahorro@{DOMINIO}, almendros@{DOMINIO}, vol.laura@{DOMINIO})")
         self.stdout.write(f"Contraseña de todos: {CLAVE}")
@@ -127,6 +128,7 @@ class Command(BaseCommand):
         Recogida.objects.all().delete()
         Asignacion.objects.all().delete()
         Notificacion.objects.all().delete()
+        PublicacionRecurrente.objects.all().delete()
         Donacion.objects.all().delete()
         PerfilVoluntario.objects.all().delete()
         Usuario.objects.filter(email__endswith=f"@{DOMINIO}").delete()
@@ -271,3 +273,26 @@ class Command(BaseCommand):
                         donacion=d, consecutivo=consecutivo, kg_certificados=d.peso_estimado_kg,
                         hash_sha256=hashlib.sha256(f"{consecutivo}|{d.codigo}|{d.peso_estimado_kg}".encode()).hexdigest(),
                     )
+
+    def crear_extras(self):
+        """Calificaciones de algunas entregas, una publicación recurrente y una organización pendiente."""
+        comentarios = ["Llegó en muy buen estado, ¡gracias!", "Todo bien, puntual.", "Algunas unidades maduras, pero útiles."]
+        for i, d in enumerate(Donacion.objects.filter(estado="ENTREGADA").select_related("recogida__asignacion__receptor")[:4]):
+            receptor = d.recogida.asignacion.receptor.miembros.first()
+            Calificacion.objects.create(donacion=d, calidad_alimento=5 - (i % 2), servicio_voluntario=5,
+                                        comentario=comentarios[i % 3], creado_por=receptor)
+        espiga = self.donantes["laespiga"]
+        PublicacionRecurrente.objects.create(
+            donante=espiga, creado_por=espiga.miembros.first(), categoria=self.categorias["Panadería"],
+            descripcion="Pan del día que no se vendió", cantidad=12, peso_estimado_kg=12, dias_semana="0,1,2,3,4,5",
+            hora_publicacion=time(18), horas_para_recoger=3, horas_vida_util=20,
+            ultima_publicacion=timezone.localdate(),  # ya se publicó hoy (no duplicar al cargar)
+        )
+        nueva = Organizacion.objects.create(
+            tipo=Organizacion.Tipo.RECEPTOR, categoria="FUNDACION", razon_social="Fundación Sonrisas del Desierto",
+            nit="900999001-1", direccion="Dirección de prueba 201, Riohacha", latitud=Decimal("11.538000"),
+            longitud=Decimal("-72.915000"), telefono="+57 300 000 0000", correo=f"sonrisas@{DOMINIO}",
+            region=self.regiones["Riohacha"], estado_verificacion=Organizacion.Estado.PENDIENTE,
+        )
+        CapacidadReceptor.objects.create(organizacion=nueva, capacidad_kg_dia=60, personas_atendidas=90, nivel_necesidad=4)
+        self.crear_usuario("sonrisas", Usuario.Rol.RECEPTOR, "Fundación", "Sonrisas", organizacion=nueva)

@@ -1,0 +1,17 @@
+{
+  "name": "ReParte · Excedentes de alimentos",
+  "short_name": "ReParte",
+  "description": "Conecta excedentes de alimentos con quienes los necesitan.",
+  "lang": "es-CO",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF7EC",
+  "theme_color": "#2E8B57",
+  "icons": [
+    { "src": "/static/app/iconos/icono-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/static/app/iconos/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/static/app/iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

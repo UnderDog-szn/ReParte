@@ -290,4 +290,7 @@ def procesar_vencimientos():
     Hace el trabajo que en producción haría Celery Beat cada minuto.
     En la simulación se llama al consultar listados y desde /api/simulacion/procesar/.
     """
-    return {"asignaciones_expiradas": expirar_asignaciones(), "donaciones_vencidas": marcar_vencidas()}
+    from apps.donaciones.services import generar_recurrentes
+
+    return {"asignaciones_expiradas": expirar_asignaciones(), "donaciones_vencidas": marcar_vencidas(),
+            "recurrentes_publicadas": generar_recurrentes()}

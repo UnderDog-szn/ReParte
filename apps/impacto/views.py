@@ -4,7 +4,15 @@ from rest_framework.views import APIView
 
 from apps.organizaciones.models import Region
 
-from .services import indicadores
+from django.http import HttpResponse
+from django.utils import timezone
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
+
+from apps.comun.permisos import EsAdmin
+
+from .reportes import reporte_excel, reporte_pdf
+from .services import indicadores, ranking
 
 
 class ImpactoView(APIView):
@@ -31,3 +39,46 @@ class ImpactoView(APIView):
         datos = indicadores(**filtros)
         datos["alcance"] = alcance
         return Response(datos)
+
+
+class RankingView(APIView):
+    """Voluntarios con más entregas y donantes con más kilos (opcional ?region=<id>)."""
+
+    @respuesta_objeto
+    def get(self, request):
+        region = request.query_params.get("region")
+        if not region and request.user.organizacion_id:
+            region = request.user.organizacion.region_id
+        elif not region and hasattr(request.user, "perfil_voluntario"):
+            region = request.user.perfil_voluntario.region_id
+        reg = Region.objects.filter(pk=region).first() if region else None
+        datos = ranking(reg)
+        datos["alcance"] = reg.nombre if reg else "Todas las regiones"
+        return Response(datos)
+
+
+def _filtros_reporte(request):
+    q = request.query_params
+    region = Region.objects.filter(pk=q.get("region")).first() if q.get("region") else None
+    return {"region": region, "desde": q.get("desde") or None, "hasta": q.get("hasta") or None}
+
+
+class ReporteExcelView(APIView):
+    permission_classes = [EsAdmin]
+
+    @extend_schema(responses={(200, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"): OpenApiTypes.BINARY})
+    def get(self, request):
+        r = HttpResponse(reporte_excel(**_filtros_reporte(request)),
+                         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        r["Content-Disposition"] = f'attachment; filename="reparte_reporte_{timezone.localdate()}.xlsx"'
+        return r
+
+
+class ReportePDFView(APIView):
+    permission_classes = [EsAdmin]
+
+    @extend_schema(responses={(200, "application/pdf"): OpenApiTypes.BINARY})
+    def get(self, request):
+        r = HttpResponse(reporte_pdf(**_filtros_reporte(request)), content_type="application/pdf")
+        r["Content-Disposition"] = f'attachment; filename="reparte_impacto_{timezone.localdate()}.pdf"'
+        return r

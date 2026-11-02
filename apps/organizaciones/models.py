@@ -71,6 +71,7 @@ class Organizacion(models.Model):
     correo = models.EmailField()
     region = models.ForeignKey(Region, on_delete=models.PROTECT, related_name="organizaciones")
     estado_verificacion = models.CharField(max_length=10, choices=Estado.choices, default=Estado.PENDIENTE)
+    documento_soporte = models.FileField(upload_to="soportes/", blank=True, help_text="RUT o certificado de existencia")
     motivo_rechazo = models.TextField(blank=True)
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)

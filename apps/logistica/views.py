@@ -8,12 +8,18 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema
 
 from apps.comun.excepciones import ErrorNegocio
 
-from apps.comun.esquemas import CodigoSerializer, MotivoSerializer, TemperaturaSerializer, sin_cuerpo
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+
+from apps.comun.esquemas import CodigoSerializer, MotivoSerializer, TemperaturaSerializer, UbicacionSerializer, sin_cuerpo
 from apps.comun.permisos import EsDonante, EsVoluntario
 from apps.emparejamiento.services import procesar_vencimientos
 
 from . import services
 from .models import Certificado, Recogida
+from .pdf import certificado_pdf
 from .rutas import ruta_de_recogida
 from .serializers import CertificadoSerializer, RecogidaSerializer
 
@@ -64,6 +70,13 @@ class RecogidaViewSet(viewsets.GenericViewSet):
             lat = lon = None
         return Response(ruta_de_recogida(r, lat, lon))
 
+    @extend_schema(request=UbicacionSerializer, responses=OpenApiTypes.OBJECT)
+    @action(detail=True, methods=["post"])
+    def ubicacion(self, request, pk=None):
+        """El voluntario comparte su posición durante la recogida (seguimiento en vivo)."""
+        p = services.actualizar_ubicacion(self.get_object(), self._perfil(), request.data.get("lat"), request.data.get("lon"))
+        return Response({"lat": p.latitud, "lon": p.longitud, "actualizada_en": p.ubicacion_actualizada_en})
+
     @action(detail=False)
     def historial(self, request):
         qs = self.get_queryset().filter(voluntario=self._perfil(), estado="ENTREGADA").order_by("-entregada_en")
@@ -101,4 +114,27 @@ class CertificadoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, views
 
     def get_queryset(self):
         return Certificado.objects.filter(donacion__donante=self.request.user.organizacion).select_related(
-            "donacion__recogida__asignacion__receptor")
+            "donacion__recogida__asignacion__receptor", "donacion__donante", "donacion__categoria")
+
+    @extend_schema(responses={(200, "application/pdf"): OpenApiTypes.BINARY})
+    @action(detail=True)
+    def pdf(self, request, pk=None):
+        """Descarga el certificado en PDF."""
+        c = self.get_object()
+        url = request.build_absolute_uri(f"/api/certificados/verificar/{c.consecutivo}/")
+        r = HttpResponse(certificado_pdf(c, url), content_type="application/pdf")
+        r["Content-Disposition"] = f'attachment; filename="certificado_{c.consecutivo}.pdf"'
+        return r
+
+
+class VerificarCertificadoView(APIView):
+    """Verificación pública de un certificado por su consecutivo (para terceros)."""
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    @extend_schema(responses=OpenApiTypes.OBJECT)
+    def get(self, request, consecutivo):
+        c = get_object_or_404(Certificado.objects.select_related("donacion__donante"), consecutivo=consecutivo)
+        return Response({"valido": True, "consecutivo": c.consecutivo, "donante": c.donacion.donante.razon_social,
+                         "kg": c.kg_certificados, "emitido_en": c.emitido_en, "hash_sha256": c.hash_sha256})

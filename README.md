@@ -84,6 +84,25 @@ Las rutas se calculan con OSRM (servidor de demostración); si no responde, se m
 Con el superusuario verás el panel general, todas las donaciones y el botón "Ver cálculo de candidatos",
 que muestra los cuatro factores del algoritmo para cada receptor.
 
+## Funciones agregadas (versión 2)
+
+| Función | Dónde verla |
+|---|---|
+| Fotos de la publicación, la recogida y la entrega | Publicar (paso 1), detalle de la donación, Mi recogida |
+| Seguimiento en vivo del voluntario | Detalle de una donación en recogida o en tránsito (donante y receptor) |
+| Calificación de 1 a 5 (alimento y voluntario) | Detalle de una donación entregada, como receptor |
+| Certificado en PDF y verificación pública | Certificados (donante) · `/api/certificados/verificar/<consecutivo>/` |
+| App instalable (PWA) | Botón “Instalar app” en Chrome o Edge |
+| Registro de organizaciones y voluntarios + verificación | “Crea tu cuenta” en el login · menú Verificaciones (admin) |
+| Edición de capacidad y horarios | Mi organización → Editar (receptor) |
+| Publicaciones automáticas | Publicar (paso 3) → “publicarlo automáticamente” · Inicio → Automáticas |
+| Ranking e insignias | Menú Ranking (voluntario y admin) · Impacto → Ver el ranking |
+| Reportes Excel y PDF | Panel (admin) → Reportes |
+
+Después de actualizar el código: `pip install -r requirements.txt` (Pillow, openpyxl y reportlab) y `python manage.py migrate`.
+Las publicaciones automáticas se ejecutan al consultar listados o con “Procesar ahora” en el panel (en producción, Celery Beat).
+Si el voluntario está a más de 40 km de la zona de prueba, su ubicación en vivo se simula sobre la ruta.
+
 Pruebas automáticas: `python manage.py test apps`
 
 ```

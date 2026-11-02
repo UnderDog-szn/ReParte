@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from apps.organizaciones.serializers import OrganizacionBreveSerializer
 
-from .models import CategoriaAlimento, Donacion
+from .models import CategoriaAlimento, Donacion, PublicacionRecurrente
 
 
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -29,10 +29,11 @@ class DonacionListaSerializer(serializers.ModelSerializer):
     condicion_display = serializers.CharField(source="get_condicion_display", read_only=True)
     unidad_display = serializers.CharField(source="get_unidad_display", read_only=True)
     codigo_entrega = serializers.SerializerMethodField()
+    foto = serializers.SerializerMethodField()
 
     class Meta:
         model = Donacion
-        fields = ["id", "codigo", "descripcion", "categoria", "cantidad", "unidad", "unidad_display",
+        fields = ["id", "codigo", "descripcion", "categoria", "foto", "cantidad", "unidad", "unidad_display",
                   "peso_estimado_kg", "condicion", "condicion_display", "estado", "estado_display",
                   "fecha_limite_consumo", "recogida_desde", "recogida_hasta", "latitud", "longitud",
                   "donante", "receptor", "codigo_entrega", "creado_en"]
@@ -40,6 +41,12 @@ class DonacionListaSerializer(serializers.ModelSerializer):
     def get_receptor(self, d):
         a = _asignacion_aceptada(d)
         return OrganizacionBreveSerializer(a.receptor).data if a else None
+
+    def get_foto(self, d):
+        for f in d.fotos.all():
+            if f.etapa == "PUBLICACION":
+                return f.imagen.url
+        return None
 
     def get_codigo_entrega(self, d):
         """Solo el receptor ve el código que debe darle al voluntario."""
@@ -68,10 +75,28 @@ class DonacionDetalleSerializer(DonacionListaSerializer):
     recogida = serializers.SerializerMethodField()
     certificado = serializers.SerializerMethodField()
     linea_tiempo = serializers.SerializerMethodField()
+    fotos = serializers.SerializerMethodField()
+    calificacion = serializers.SerializerMethodField()
+    puede_calificar = serializers.SerializerMethodField()
 
     class Meta(DonacionListaSerializer.Meta):
         fields = DonacionListaSerializer.Meta.fields + [
-            "motivo_cancelacion", "asignaciones", "recogida", "certificado", "linea_tiempo"]
+            "motivo_cancelacion", "asignaciones", "recogida", "certificado", "linea_tiempo", "fotos",
+            "calificacion", "puede_calificar"]
+
+    def get_fotos(self, d):
+        return [{"url": f.imagen.url, "etapa": f.etapa, "etapa_display": f.get_etapa_display()} for f in d.fotos.all()]
+
+    def get_calificacion(self, d):
+        c = getattr(d, "calificacion", None)
+        return {"calidad_alimento": c.calidad_alimento, "servicio_voluntario": c.servicio_voluntario,
+                "comentario": c.comentario, "creado_en": c.creado_en} if c else None
+
+    def get_puede_calificar(self, d):
+        request = self.context.get("request")
+        r = getattr(d, "recogida", None)
+        return bool(request and r and d.estado == "ENTREGADA" and not hasattr(d, "calificacion")
+                    and request.user.organizacion_id == r.asignacion.receptor_id)
 
     def get_asignaciones(self, d):
         return [{"intento": a.intento, "receptor": a.receptor.razon_social, "puntaje": a.puntaje, "origen": a.origen,
@@ -154,3 +179,31 @@ class DonacionCrearSerializer(serializers.ModelSerializer):
         if errores:
             raise serializers.ValidationError(errores)
         return datos
+
+
+class RecurrenteSerializer(serializers.ModelSerializer):
+    categoria = serializers.PrimaryKeyRelatedField(queryset=CategoriaAlimento.objects.filter(activa=True))
+    categoria_nombre = serializers.CharField(source="categoria.nombre", read_only=True)
+    dias = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=6), write_only=True)
+    dias_lista = serializers.ListField(source="dias", read_only=True)
+    peso_estimado_kg = serializers.DecimalField(max_digits=8, decimal_places=2, required=False)
+
+    class Meta:
+        model = PublicacionRecurrente
+        fields = ["id", "categoria", "categoria_nombre", "descripcion", "cantidad", "unidad", "peso_estimado_kg",
+                  "condicion", "dias", "dias_lista", "hora_publicacion", "horas_para_recoger", "horas_vida_util",
+                  "activa", "ultima_publicacion"]
+        read_only_fields = ["ultima_publicacion"]
+
+    def validate(self, d):
+        if "dias" in d:
+            if not d["dias"]:
+                raise serializers.ValidationError({"dias": "Elige al menos un día."})
+            d["dias_semana"] = ",".join(str(x) for x in sorted(set(d.pop("dias"))))
+        if d.get("cantidad") is not None and d["cantidad"] <= 0:
+            raise serializers.ValidationError({"cantidad": "Debe ser mayor que cero."})
+        if not d.get("peso_estimado_kg") and "cantidad" in d:
+            if d.get("unidad", "KG") != "KG":
+                raise serializers.ValidationError({"peso_estimado_kg": "Indica el peso aproximado en kg."})
+            d["peso_estimado_kg"] = d["cantidad"]
+        return d

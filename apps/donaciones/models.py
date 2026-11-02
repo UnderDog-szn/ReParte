@@ -120,3 +120,60 @@ class FotoDonacion(models.Model):
     class Meta:
         verbose_name = "foto de donación"
         verbose_name_plural = "fotos de donación"
+
+
+class Calificacion(models.Model):
+    """El receptor califica la donación recibida y el servicio del voluntario."""
+
+    donacion = models.OneToOneField(Donacion, on_delete=models.CASCADE, related_name="calificacion")
+    calidad_alimento = models.PositiveSmallIntegerField()
+    servicio_voluntario = models.PositiveSmallIntegerField(null=True, blank=True)
+    comentario = models.CharField(max_length=300, blank=True)
+    creado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "calificación"
+        verbose_name_plural = "calificaciones"
+        constraints = [
+            models.CheckConstraint(condition=Q(calidad_alimento__gte=1, calidad_alimento__lte=5), name="calidad_1_a_5"),
+            models.CheckConstraint(
+                condition=Q(servicio_voluntario__isnull=True) | Q(servicio_voluntario__gte=1, servicio_voluntario__lte=5),
+                name="servicio_1_a_5",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.donacion.codigo}: {self.calidad_alimento}/5"
+
+
+class PublicacionRecurrente(models.Model):
+    """Plantilla que publica sola un excedente que se repite (ej.: todos los días a las 6 p. m. sobra pan)."""
+
+    donante = models.ForeignKey("organizaciones.Organizacion", on_delete=models.CASCADE, related_name="recurrentes")
+    creado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    categoria = models.ForeignKey(CategoriaAlimento, on_delete=models.PROTECT)
+    descripcion = models.CharField(max_length=300)
+    cantidad = models.DecimalField(max_digits=8, decimal_places=2)
+    unidad = models.CharField(max_length=8, choices=Donacion.Unidad.choices, default=Donacion.Unidad.KG)
+    peso_estimado_kg = models.DecimalField(max_digits=8, decimal_places=2)
+    condicion = models.CharField(max_length=12, choices=Donacion.Condicion.choices, default=Donacion.Condicion.AMBIENTE)
+    dias_semana = models.CharField(max_length=20, help_text="Días separados por coma: 0=lunes … 6=domingo")
+    hora_publicacion = models.TimeField()
+    horas_para_recoger = models.PositiveSmallIntegerField(default=3)
+    horas_vida_util = models.PositiveSmallIntegerField(default=24)
+    activa = models.BooleanField(default=True)
+    ultima_publicacion = models.DateField(null=True, blank=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "publicación recurrente"
+        verbose_name_plural = "publicaciones recurrentes"
+        ordering = ["hora_publicacion"]
+
+    @property
+    def dias(self):
+        return [int(d) for d in self.dias_semana.split(",") if d.strip().isdigit()]
+
+    def __str__(self):
+        return f"{self.descripcion} ({self.hora_publicacion:%H:%M})"

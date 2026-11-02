@@ -156,3 +156,43 @@ def emitir_certificado(donacion):
     return Certificado.objects.create(
         donacion=donacion, consecutivo=consecutivo, kg_certificados=donacion.peso_estimado_kg, hash_sha256=huella
     )
+
+
+# ---------------------------------------------------------------- seguimiento en vivo
+def actualizar_ubicacion(recogida, perfil, lat, lon):
+    """El voluntario comparte su posición solo mientras tiene una recogida activa."""
+    if recogida.voluntario_id != perfil.pk or recogida.estado not in (Recogida.Estado.TOMADA, Recogida.Estado.RECOGIDA):
+        raise ErrorNegocio("Solo se comparte la ubicación durante una recogida activa.")
+    try:
+        lat, lon = float(lat), float(lon)
+    except (TypeError, ValueError):
+        raise ErrorNegocio("Ubicación no válida.")
+    if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+        raise ErrorNegocio("Ubicación no válida.")
+    perfil.latitud, perfil.longitud = round(lat, 6), round(lon, 6)
+    perfil.ubicacion_actualizada_en = timezone.now()
+    perfil.save(update_fields=["latitud", "longitud", "ubicacion_actualizada_en"])
+    return perfil
+
+
+def seguimiento(donacion, usuario):
+    """Posición del voluntario para el donante, el receptor o el administrador."""
+    recogida = getattr(donacion, "recogida", None)
+    if not recogida:
+        raise ErrorNegocio("Esta donación aún no tiene recogida.")
+    es_admin = usuario.rol == "ADMIN" or usuario.is_superuser
+    if not (es_admin or usuario.organizacion_id in (donacion.donante_id, recogida.asignacion.receptor_id)):
+        raise ErrorNegocio("No participas en esta donación.")
+    v = recogida.voluntario
+    activa = recogida.estado in (Recogida.Estado.TOMADA, Recogida.Estado.RECOGIDA)
+    org = lambda o: {"nombre": o.razon_social, "lat": float(o.latitud), "lon": float(o.longitud)}  # noqa: E731
+    return {
+        "estado": recogida.estado,
+        "estado_display": recogida.get_estado_display(),
+        "voluntario": (v.usuario.get_full_name() or v.usuario.email) if v else None,
+        "vehiculo": v.get_tipo_vehiculo_display() if v else None,
+        "posicion": {"lat": float(v.latitud), "lon": float(v.longitud), "actualizada_en": v.ubicacion_actualizada_en}
+        if (v and activa and v.latitud is not None) else None,
+        "origen": org(donacion.donante),
+        "destino": org(recogida.asignacion.receptor),
+    }
