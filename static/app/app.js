@@ -76,7 +76,7 @@ const ICONOS = {
   candado: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
 };
 const icono = (n, cls = "") => `<svg class="icono ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONOS[n] || ""}</svg>`;
-const logo = (t = 32) => `<svg width="${t}" height="${t}" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#2E8B57"/><path d="M8.5 21c0-7 5-11.5 14-12-1 9.5-5.5 14-11.5 14" fill="#FFF8EF" stroke="#FFF8EF" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 23c3-4.5 6-7 9.5-9" fill="none" stroke="#2E8B57" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="23" r="4" fill="#F4A261"/></svg>`;
+const logo = (t = 32) => `<img class="logo-img" src="/static/app/logo/logo-globo.png" width="${t}" height="${t}" alt="" aria-hidden="true">`;
 
 const ESTADOS = {
   PUBLICADA: ["Publicada", "info"], ASIGNADA: ["Asignada", "sol"], EN_RECOGIDA: ["En recogida", "violeta"],
@@ -169,13 +169,13 @@ async function subirFoto(donacionId, archivo, etapa) {
 
 /* ---------- visual por categoría (ícono + color) ---------- */
 const CATEGORIAS_VISUAL = {
-  "Frutas y verduras": ["manzana", "#FDE2D6", "#C2502E"], "Panadería": ["pan", "#FFF0C9", "#A8730A"], "Lácteos": ["botella", "#E1F0FA", "#2F7DB3"],
-  "Carnes y pescados": ["carne", "#FCE1E4", "#B8435A"], "Granos y cereales": ["trigo", "#F7EBD3", "#9A6B1F"], "Enlatados": ["lata", "#EFE8FB", "#6E4FB0"],
-  "Comidas preparadas": ["olla", "#FDE6CF", "#C25F1A"], "Bebidas": ["vaso", "#DDF4EC", "#2C8A68"],
+  "Frutas y verduras": ["manzana", "#E6F0DE", "#2F5430"], "Panadería": ["pan", "#F7E9C6", "#7A5600"], "Lácteos": ["botella", "#F1F4EC", "#2B3A2E"],
+  "Carnes y pescados": ["carne", "#FCE4DB", "#B83A14"], "Granos y cereales": ["trigo", "#F3E7C4", "#8A6A12"], "Enlatados": ["lata", "#E4EFD6", "#3D6B3D"],
+  "Comidas preparadas": ["olla", "#FDE3C8", "#C25F1A"], "Bebidas": ["vaso", "#DDEBC9", "#4B7F2F"],
 };
 /** Devuelve [ícono HTML, color de fondo] de la categoría. */
 const catVisual = (nombre) => {
-  const [ic, fondo, trazo] = CATEGORIAS_VISUAL[nombre] || ["cesta", "#FFF4D6", "#A8730A"];
+  const [ic, fondo, trazo] = CATEGORIAS_VISUAL[nombre] || ["cesta", "#F7E9C6", "#7A5600"];
   return [`<span class="cat-icono" style="color:${trazo}">${icono(ic)}</span>`, fondo];
 };
 function miniatura(d, clase = "miniatura") {
@@ -183,7 +183,7 @@ function miniatura(d, clase = "miniatura") {
   return d.foto ? `<div class="${clase}"><img src="${esc(d.foto)}" alt="Foto de ${esc(d.descripcion)}" loading="lazy"></div>`
     : `<div class="${clase}" style="background:${fondo}" aria-hidden="true">${ic}</div>`;
 }
-const estrellas = (n) => `<span class="estrellas-fijas" aria-label="${n} de 5">${"★".repeat(n)}<span style="color:#E6DCCF">${"★".repeat(5 - n)}</span></span>`;
+const estrellas = (n) => `<span class="estrellas-fijas" aria-label="${n} de 5">${"★".repeat(n)}<span style="color:#E3DFD0">${"★".repeat(5 - n)}</span></span>`;
 
 /* ---------------- componentes ---------------- */
 function aviso(msg, tipo = "ok") {
@@ -467,7 +467,7 @@ async function vRegistro() {
     const centro = d.latitud ? [Number(d.latitud), Number(d.longitud)] : [Number(reg?.latitud || 11.5444), Number(reg?.longitud || -72.9072)];
     const m = crearMapa($("#mapa-reg"), centro);
     if (!m) return;
-    const nuevaMarca = (p) => L.circleMarker(p, { radius: 11, color: "#fff", weight: 3, fillColor: "#E76F51", fillOpacity: 1 }).addTo(m);
+    const nuevaMarca = (p) => L.circleMarker(p, { radius: 11, color: "#fff", weight: 3, fillColor: "#F28C28", fillOpacity: 1 }).addTo(m);
     let marca = d.latitud ? nuevaMarca(centro) : null;
     const fijar = (lat, lon) => {
       d.latitud = lat.toFixed(6); d.longitud = lon.toFixed(6);
@@ -785,9 +785,9 @@ async function seguirEnVivo(id) {
   if (!m) return;
   const pin = (p, color, txt) => L.circleMarker([p.lat, p.lon], { radius: 11, color: "#fff", weight: 3, fillColor: color, fillOpacity: 1 })
     .addTo(m).bindTooltip(txt, { permanent: true, direction: "top", offset: [0, -10] });
-  pin(s.origen, "#2E8B57", `Recoger: ${esc(s.origen.nombre)}`);
-  pin(s.destino, "#F4A261", `Entregar: ${esc(s.destino.nombre)}`);
-  L.polyline([[s.origen.lat, s.origen.lon], [s.destino.lat, s.destino.lon]], { color: "#6E625A", weight: 2, dashArray: "5 7" }).addTo(m);
+  pin(s.origen, "#3D6B3D", `Recoger: ${esc(s.origen.nombre)}`);
+  pin(s.destino, "#F28C28", `Entregar: ${esc(s.destino.nombre)}`);
+  L.polyline([[s.origen.lat, s.origen.lon], [s.destino.lat, s.destino.lon]], { color: "#5F6E63", weight: 2, dashArray: "5 7" }).addTo(m);
   const icon = L.divIcon({ className: "marcador-voluntario", html: "<span></span>", iconSize: [22, 22], iconAnchor: [11, 11] });
   let marca = null;
   const actualizar = (s2) => {
@@ -939,7 +939,7 @@ async function vDisponibles(v) {
   v.innerHTML = `<p class="ayuda" style="margin-bottom:12px">Excedentes publicados en ${esc(YO.region?.nombre || "tu región")}.
       Elige lo que tu organización necesita: queda asignado a ustedes al instante y se avisa a los voluntarios.</p>
     ${lista.length ? `<div id="mapa" class="mapa" style="height:280px;margin-bottom:12px"></div>
-      <div class="leyenda" style="margin:0 0 16px"><span><i style="background:#1F7A4D"></i>Puedes solicitarlo</span><span><i style="background:#9AA59F"></i>No compatible</span><span><i style="background:#E8833A"></i>Tu organización</span></div>
+      <div class="leyenda" style="margin:0 0 16px"><span><i style="background:#3D6B3D"></i>Puedes solicitarlo</span><span><i style="background:#9AA3AB"></i>No compatible</span><span><i style="background:#F28C28"></i>Tu organización</span></div>
       <div class="pestanas" id="filtros"></div><div class="lista" id="lista"></div>`
       : vacio("cesta", "No hay excedentes publicados ahora", "Cuando un donante publique algo en tu región aparecerá aquí.")}`;
   if (!lista.length) return;
@@ -979,10 +979,10 @@ async function vDisponibles(v) {
 
   const m = crearMapa($("#mapa"), [Number(org.latitud), Number(org.longitud)]);
   if (!m) return;
-  L.circleMarker([org.latitud, org.longitud], { radius: 11, color: "#fff", weight: 3, fillColor: "#E8833A", fillOpacity: 1 })
+  L.circleMarker([org.latitud, org.longitud], { radius: 11, color: "#fff", weight: 3, fillColor: "#F28C28", fillOpacity: 1 })
     .addTo(m).bindTooltip("Tu organización", { direction: "top" });
   lista.forEach((d) => {
-    L.circleMarker([d.latitud, d.longitud], { radius: 9, color: "#fff", weight: 2, fillColor: d.compatible ? "#1F7A4D" : "#9AA59F", fillOpacity: 1 })
+    L.circleMarker([d.latitud, d.longitud], { radius: 9, color: "#fff", weight: 2, fillColor: d.compatible ? "#3D6B3D" : "#9AA3AB", fillOpacity: 1 })
       .addTo(m).bindPopup(`<b>${esc(d.descripcion)}</b><br>${fmt.kg(d.peso_estimado_kg)} · ${esc(d.donante.razon_social)}<br>${d.compatible ? "Puedes solicitarlo" : esc(d.motivo_no_compatible)}`);
   });
   m.fitBounds([[org.latitud, org.longitud], ...lista.map((d) => [d.latitud, d.longitud])].map((p) => p.map(Number)), { padding: [30, 30], maxZoom: 15 });
@@ -1080,7 +1080,7 @@ function distanciaKm(a, b) {
   const h = Math.sin(dlat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dlon / 2) ** 2;
   return 2 * 6371 * Math.asin(Math.sqrt(h));
 }
-const COLOR_PUNTO = { voluntario: "#2563EB", recoger: "#1F7A4D", entregar: "#E8833A" };
+const COLOR_PUNTO = { voluntario: "#2B3A2E", recoger: "#3D6B3D", entregar: "#F28C28" };
 const ETIQUETA_PUNTO = { voluntario: "Tú", recoger: "Recoger", entregar: "Entregar" };
 
 /** Pide la ruta al backend (OSRM) y la dibuja. Devuelve los datos de la ruta. */
@@ -1089,8 +1089,8 @@ async function dibujarRuta(m, recogidaId, ubic, capaAnterior) {
   const r = await api(`/recogidas/${recogidaId}/ruta/${q}`);
   if (capaAnterior) capaAnterior.remove();
   const capa = L.layerGroup().addTo(m);
-  L.polyline(r.geometria, { color: "#13261C", weight: 8, opacity: 0.25 }).addTo(capa);
-  L.polyline(r.geometria, { color: "#1F7A4D", weight: 5, opacity: 0.95, dashArray: r.fuente === "osrm" ? null : "10 8" }).addTo(capa);
+  L.polyline(r.geometria, { color: "#2B3A2E", weight: 8, opacity: 0.25 }).addTo(capa);
+  L.polyline(r.geometria, { color: "#3D6B3D", weight: 5, opacity: 0.95, dashArray: r.fuente === "osrm" ? null : "10 8" }).addTo(capa);
   r.puntos.forEach((p) => {
     L.circleMarker([p.lat, p.lon], { radius: 11, color: "#fff", weight: 3, fillColor: COLOR_PUNTO[p.tipo], fillOpacity: 1 })
       .addTo(capa).bindTooltip(`${ETIQUETA_PUNTO[p.tipo]}: ${esc(p.nombre)}`, { permanent: p.tipo !== "voluntario", direction: "top", offset: [0, -10] });
@@ -1131,15 +1131,15 @@ async function vMapa(v) {
   titulo("Mapa");
   const [dons, recs] = await Promise.all([api("/donaciones/mapa/"), api(`/organizaciones/receptores/${YO.region ? `?region=${YO.region.id}` : ""}`)]);
   v.innerHTML = `<div id="mapa" class="mapa"></div>
-    <div class="leyenda"><span><i style="background:#1F7A4D"></i>Donación activa</span><span><i style="background:#E8833A"></i>Organización receptora</span></div>
+    <div class="leyenda"><span><i style="background:#3D6B3D"></i>Donación activa</span><span><i style="background:#F28C28"></i>Organización receptora</span></div>
     <div class="seccion-cab"><h2>Donaciones activas (${dons.length})</h2></div>
     ${dons.length ? `<div class="lista">${dons.map(tarjetaDonacion).join("")}</div>` : vacio("caja", "No hay donaciones activas", "Cuando se publique una aparecerá aquí.")}`;
   const todos = [...dons, ...recs];
   const centro = todos.length ? [Number(todos[0].latitud), Number(todos[0].longitud)] : [11.5444, -72.9072];
   const m = crearMapa($("#mapa"), centro);
   if (!m) return;
-  recs.forEach((r) => punto(m, r.latitud, r.longitud, "#E8833A", `<b>${esc(r.razon_social)}</b><br>${esc(r.categoria_display)}`));
-  dons.forEach((d) => punto(m, d.latitud, d.longitud, "#1F7A4D", `<b>${esc(d.descripcion)}</b><br>${fmt.kg(d.peso_estimado_kg)} · ${esc(ESTADOS[d.estado][0])}<br><a href="#/donacion/${d.id}">Ver detalle</a>`));
+  recs.forEach((r) => punto(m, r.latitud, r.longitud, "#F28C28", `<b>${esc(r.razon_social)}</b><br>${esc(r.categoria_display)}`));
+  dons.forEach((d) => punto(m, d.latitud, d.longitud, "#3D6B3D", `<b>${esc(d.descripcion)}</b><br>${fmt.kg(d.peso_estimado_kg)} · ${esc(ESTADOS[d.estado][0])}<br><a href="#/donacion/${d.id}">Ver detalle</a>`));
   if (todos.length > 1) m.fitBounds(todos.map((x) => [Number(x.latitud), Number(x.longitud)]), { padding: [30, 30] });
 }
 
@@ -1176,11 +1176,11 @@ async function vCerca(v) {
     const m = crearMapa($("#mapa"), [Number(disp[0].origen.latitud), Number(disp[0].origen.longitud)]);
     if (m) {
       disp.forEach((r) => {
-        punto(m, r.origen.latitud, r.origen.longitud, "#1F7A4D", `<b>Recoger:</b> ${esc(r.origen.razon_social)}<br>${fmt.kg(r.peso_kg)}`);
-        punto(m, r.destino.latitud, r.destino.longitud, "#E8833A", `<b>Entregar:</b> ${esc(r.destino.razon_social)}`);
+        punto(m, r.origen.latitud, r.origen.longitud, "#3D6B3D", `<b>Recoger:</b> ${esc(r.origen.razon_social)}<br>${fmt.kg(r.peso_kg)}`);
+        punto(m, r.destino.latitud, r.destino.longitud, "#F28C28", `<b>Entregar:</b> ${esc(r.destino.razon_social)}`);
       });
       disp.forEach((r) => L.polyline([[r.origen.latitud, r.origen.longitud], [r.destino.latitud, r.destino.longitud]].map((p) => p.map(Number)),
-        { color: "#5B6660", weight: 2, dashArray: "4 6" }).addTo(m));
+        { color: "#5F6E63", weight: 2, dashArray: "4 6" }).addTo(m));
       const pts = disp.flatMap((r) => [[Number(r.origen.latitud), Number(r.origen.longitud)], [Number(r.destino.latitud), Number(r.destino.longitud)]]);
       m.fitBounds(pts, { padding: [30, 30], maxZoom: 15 });
       let capa = null, ubicacion;
